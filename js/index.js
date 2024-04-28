@@ -1,15 +1,21 @@
 const express = require('express');
+morgan = require('morgan');
+
+// Initialize Express application
 const app = express();
 
+// Apply Morgan logging Middleware
+app.use(morgan('common'));
+    
+// Film data
 let films = [
     {
     titleEn: 'The Scent of Pomegranates',
     titleOrig: 'Nran guyne',
     director: 'Teimour Birashvili',
-    country: 'Soviet Union',
-    languages: 'Georgian',
+    country: ['Soviet Union', 'Armenia'],
+    languages: 'Armenian',
     year: '1969',
-    duration: '74 min',
     genre: 'Drama',
     },
     {
@@ -19,7 +25,6 @@ let films = [
     country: 'United States',
     languages: 'English',
     year: '2015',
-    duration: '92 min',
     genre: 'Horror',
     },
     {
@@ -29,7 +34,6 @@ let films = [
     country: 'United States',
     languages: 'English',
     year: '2014',
-    duration: '106 min',
     genre: 'Drama',
     },
     {
@@ -39,7 +43,6 @@ let films = [
     country: 'United Kingdom',
     languages: 'English',
     year: '2017',
-    duration: '107 min',
     genre: 'Comedy',
     },
     {
@@ -49,7 +52,6 @@ let films = [
     country: 'South Korea',
     languages: 'Korean',
     year: '2016',
-    duration: '145 min',
     genre: 'Drama',
     },
     {
@@ -59,7 +61,6 @@ let films = [
     country: 'Italy',
     languages: 'Italian',
     year: '2013',
-    duration: '142 min',
     genre: 'Drama',
     },
     {
@@ -69,7 +70,6 @@ let films = [
     country: ['Mexico', 'United States'],
     languages: 'Spanish',
     year: '1970',
-    duration: '125 min',
     genre: 'Drama',
     },
     {
@@ -79,7 +79,6 @@ let films = [
     country: 'Italy',
     languages: ['Italian', 'German', 'Russian', 'English'],
     year: '1977',
-    duration: '98 min',
     genre: 'Horror',
     },
     {
@@ -89,35 +88,40 @@ let films = [
     country: 'Germany',
     languages: ['Silent','German'],
     year: '1927',
-    duration: '153 min',
     genre: 'Drama',
     },
     {
     titleEn: 'Black Orpheus',
     titleOrig: 'Orfeau Negro',
-    director: 'MArcel Camus',
+    director: 'Marcel Camus',
     country: ['Brazil', 'France', 'Italy'],
     languages: 'Portuguese',
     year: '1959',
-    duration: '',
     genre: 'Drama',
     },
 ];
 
-//GET requests
+// Serve documentation.html from public directory
+app.use('/documentation', express.static('public', {index: 'documentation.html'}));
+
+// Define route for homepage
 app.get('/', (req, res) => {
-    res.send('Welcome to my film site!');
+    res.send('Welcome to Cinephile!');
 });
 
-app.get('documentation.html', (req, res) => {
-    res.sendFile('public/documentation.html', { root: __dirname });
-});
-
+// Define route to fetch film data
 app.get('/films', (req, res) => {
     res.json(films);
 });
 
-// listen for requests
+// Error-handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('An error occurred!');
+});
+
+// Start server and Listen for requests
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
 });
+
