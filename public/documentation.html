@@ -4,40 +4,182 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinephile Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Cinephile API</h1>
-    <p> A REST API that provides access to a database of movies, directors, and actors.</p>
-    <h2>Features</h2>
-        <ul>
-            <li>Return a list of ALL movies to the user</li>
-            <li>Return data: description, genre, director, image URL, whether it's featured or not</li>
-            <li>Optional: actors, release year</li>
-            <li>Return data about a genre (description) by name/title</li>
-            <li>Return data about a director (bio, birth year, death year) by name</li>
-            <li>Return data about a director (bio, birth year, death year) by name</li>
-            <li>Allows users to register (username, password, email, date of birth)</li>
-            <li>Allows users to update their user info (username, password, email, date of birth)</li>
-            <li>Allows users to add a movie to their list of favorites</li>
-            <li>Optional: allows users to add movie to their watchlist</li>
-            <li>Allows users to remove a movie from their list of favorites</li>
-            <li>Optional: allows users to remove a movie from their watchlist</li>
-            <li>Allows existing users to deregister</li>
-        </ul>
-    <h2>Technical Requirements</h3>
-        <ol>
-            <li>created with Node.js and Express.js</li>
-            <li>uses REST architecture, with URL endpoints corresponding to data operations listed above</li>
-            <li>uses at least 3 different middleware modules, such as the body-parser package for reading data from requests and morgan for logging.</li>
-            <li>uses "package.json"</li>
-            <li>database built using MongoDB</li>
-            <li>provides movie information in JSON format</li>
-            <li>tested in Postman</li>
-            <li>includes user authentication and authorization code</li>
-            <li>includes data validation logic</li>
-            <li>source code is deployed to GitHub</li>
-            <li>deployed to Heroku</li>
-        </ol>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Cinephile API Documentation</h1>
+        <p class="mb-4">To build the server-side component of a “movies” web application. The web
+        application will provide users with access to information about different
+        movies, directors, and genres. Users will be able to sign up, update their
+        personal information, and create a list of their favorite movies.</p>
+        <h2 class="mb-3">Movie Endpoints</h2>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="align-middle">Business Logic</th>
+                        <th class="align-middle">Endpoint URL</th>
+                        <th class="align-middle">HTTP Method</th>
+                        <th class="align-middle">Format of Request Data</th>
+                        <th class="align-middle">Format of Response Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Return a list of All movies to the user</td>
+                        <td>/movies</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td> A JSON object holding data holding data about all films</td>
+                    </tr>
+                    <tr>
+                        <td>Return data about a single film by title to the user</td>
+                        <td>/movies/:title</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>
+                            A JSON object holding data about the requested film: <br />
+                            <code>
+                                { <br />
+                                    id: 1,<br />
+                                    title: 'The Seventh Seal',<br /> 
+                                    title_org: 'Det sjunde inseglet',<br />
+                                    imgURL: '#',<br />
+                                    description: 'A Knight and his squire are home from the crusades. Black Death is sweeping their country. As they approach home, Death appears to the knight and tells him it is his time. The knight challenges Death to a chess game for his life.',<br />
+                                    release: {<br /> 
+                                    &nbsp;&nbsp;year: '1957',<br />
+                                    &nbsp;&nbsp;month: '3',<br />
+                                    &nbsp;&nbsp;day: '16'<br />
+                                    },<br />
+                                    country: 'Sweden',<br />
+                                    language: 'Swedish',<br />
+                                    genre: 'Drama',<br /> 
+                                    director: {<br /> 
+                                    &nbsp;&nbsp;name: 'Ingmar Bergman',<br />  
+                                    &nbsp;&nbsp;bio: 'Ingmar Bergman was a Swedish film and theatre director and screenwriter.',<br /> 
+                                    &nbsp;&nbsp;dob: '14 July 1918'<br />
+                                    &nbsp;&nbsp;dob: '30 July 2007'<br />
+                                    },<br />
+                                    featured: true<br />
+                                },
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return data about a single movie's genre by title</td>
+                        <td>/movies/:title/genre</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>A JSON object holding data about the genre of a specific movie ex:
+                            <code>
+                                "Horror"
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return data about a director by title/name</td>
+                        <td>/movies/director/:directorName</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>JSON</td>
+                    </tr>
+                </tbody>
+            </table>
+        <h2>User Endpoints</h2>
+        </table>
+        <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="align-middle">Business Logic</th>
+                        <th class="align-middle">Endpoint URL</th>
+                        <th class="align-middle">HTTP Method</th>
+                        <th class="align-middle">Format of Request Data</th>
+                        <th class="align-middle">Format of Response Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Create a new user</td>
+                        <td>/users</td>
+                        <td>POST</td>
+                        <td>A JSON object holding data from the user to be added:<br /> 
+                            <code>
+                                {<br /> 
+                                    'name': "Chris", <br />
+                                    'email': 'chrisholt@gmail.com',<br />
+                                    'password': 'password123',<br />
+                                    'dob': 'January 13, 1992',<br />
+                                    'favMovies': [],<br /> 
+                                }        
+                            </code>
+                        </td>
+                        <td>A JSON object holding data from the user that has been added plus uuid:
+                            <code>
+                                {<br /> 
+                                    'id': 2,<br />
+                                    'name': "Chris", <br />
+                                    'email': 'chrisholt@gmail.com',<br />
+                                    'password': 'password123',<br />
+                                    'dob': 'January 13, 1992',<br />
+                                    'favMovies': [],<br />  
+                                }
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Update user's info (name) by uuid</td>
+                        <td>/users/:id</td>
+                        <td>PUT</td>
+                        <td>A JSON object holding data from the user to be updated:<br /> 
+                            <code>
+                                {<br /> 
+                                    'user': "Mary", <br />
+                                    'email': 'marynolan@gmail.com',<br />
+                                    'password': '$filmGeek',<br />
+                                    'dob': 'January 13, 1992',<br />
+                                    'favMovies': [Whiplash],<br /> 
+                                }     
+                            </code>
+                        </td>
+                        <td>A JSON object holding data from the user that has been updated:<br /> 
+                            <code>
+                                {<br /> 
+                                    'user': "Mary Nolan", <br />
+                                    'email': 'marynolan@gmail.com',<br />
+                                    'password': '$filmGeek',<br />
+                                    'dob': 'January 13, 1992',<br />
+                                    'favMovies': [Whiplash],<br />  
+                                }
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Add movies to user's favorite list</td>
+                        <td>/users/:id/:title</td>
+                        <td>POST</td>
+                        <td>None</td>
+                        <td>A message returning if a movie has been successfully added to the list.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Delete a user's favMovie</td>
+                        <td>/users/:id/:title</td>
+                        <td>DELETE</td>
+                        <td>None</td>
+                        <td>A message returning if a movie has been successfully removed from the list.
+
+                        </td>
+                        </tr>
+                    <tr>
+                        <td>Delete a user</td>
+                        <td>/users/:id/</td>
+                        <td>DELETE</td>
+                        <td>None</td>
+                        <td>A message returning if the user was successfully deleted.</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
 </body>
 </html>
 

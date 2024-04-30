@@ -1,6 +1,5 @@
 const express = require('express');
-morgan = require('morgan');
-
+    morgan = require('morgan');
 // Initialize Express application
 const app = express();
 
@@ -10,51 +9,116 @@ app.use(morgan('common'));
 // Film data
 let films = [
     {
-    titleEn: 'The Scent of Pomegranates',
-    titleOrig: 'Nran guyne',
-    director: 'Teimour Birashvili',
+    id: '1',
+    title: 'The Color of Pomegranates',
+    title_org: 'Nran guyne',
+    imgURL: '#',
+    description: 'This avant-garde film by Russian director Sergei Parajanov depicts the life of revered the 18th-century Armenian poet and musician Sayat-Nova (Vilen Galstyan).',
+    release: {
+        year: '1969',
+        month: '9',
+        day: '1'
+    },
     country: ['Soviet Union', 'Armenia'],
-    languages: 'Armenian',
-    year: '1969',
+    language: 'Armenian',
     genre: 'Drama',
+    director: {
+        name: 'Sergei Parajanov',
+        bio: 'Sergei Iosifovich Parajanov was an Armenian film director and screenwriter. Parajanov is regarded by film critics, film historians and filmmakers to be one of the greatest and most influential filmmakers in cinema history.',
+        doB: 'January 9, 1924',
+        doD: 'July 20, 1990',
+    },
+    featured: true,
     },
     {
-    titleEn: 'The Witch',
-    titleOrig: 'The Witch',
-    director: 'Robert Eggers',
+    id: '2',
+    title: 'The Witch',
+    title_org: 'The Witch',
+    imgURL: '#',
+    description: 'A family in 1630s New England is torn apart by the forces of witchcraft, black magic, and possession.',
+    release: {
+        year: '2015',
+        month: '2',
+        day: '19',
+    },
     country: 'United States',
-    languages: 'English',
-    year: '2015',
+    language: 'English',
     genre: 'Horror',
+    director: {
+        name: 'Robert Eggers',
+        bio: 'Robert Houston Eggers is an American filmmaker and production designer. He is best known for writing and directing the historical horror films The Witch and The Lighthouse, as well as directing and co-writing the historical fiction epic film The Northman. ',
+        doB: 'July 7, 1983',
+        doD: 'alive',
+    },
+    featured: false,
     },
     {
-    titleEn: 'Whiplash',
-    titleOrig: 'Whiplash',
-    director: 'Damien Chazelle',
+    id: '3',
+    title: 'Whiplash',
+    title_org: 'Whiplash',
+    imgURL: '#',
+    description: 'A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student\'s potential.',
+    release: {
+        year: '2014',
+        month: '10',
+        day: '15'
+    },
     country: 'United States',
-    languages: 'English',
-    year: '2014',
+    language: 'English',
     genre: 'Drama',
+    director: {
+        name: 'Damien Chazelle',
+        bio: 'Damien Sayre Chazelle is an American film director, producer, and screenwriter. He is best known for his films Whiplash and La La Land, for which he received several accolades, including the Golden Globe Award and the Academy Award for Best Director, making him the youngest person to win either award at the age of 32.',
+        doB: 'January 19, 1985',
+        doD: 'alive',
+    },
+    featured: false,
     },
     {
-    titleEn: 'The Death of Stalin',
-    titleOrig: 'The Death of Stalin',
-    director: 'Armando Iannucci',
+    id: '4',
+    title: 'The Death of Stalin',
+    title_org: 'The Death of Stalin',
+    imgURL: '#',
+    description: 'The internal political landscape of 1950\'s Soviet Russia takes on darkly comic form in a new film by Emmy award-winning and Oscar-nominated writer/director Armando Iannucci.',
+    release: {
+        year: '2017',
+        month: '3',
+        day: '29'
+    },
     country: 'United Kingdom',
-    languages: 'English',
-    year: '2017',
+    language: 'English',
     genre: 'Comedy',
+    director: {
+        name: 'Armando Iannucci',
+        bio: 'Armando Giovanni Iannucci is a Scottish satirist, writer, director, and radio producer. Born in Glasgow to Italian parents, Iannucci studied at the University of Glasgow followed by the University of Oxford, leaving graduate work on a PhD about John Milton to pursue a career in comedy. ',
+        doB: 'November 28, 1963',
+        doD: 'alive',
+    },
+    featured: true,
     },
     {
-    titleEn: 'The Handmaiden',
-    titleOrig: 'Ah-ga-ssi',
-    director: 'Park Chan-wook',
-    country: 'South Korea',
-    languages: 'Korean',
-    year: '2016',
+    id: '5',
+    title: 'Oppenheimer',
+    title_org: 'Oppenheimer',
+    imgURL: '#',
+    description: 'A biopic of J. Robert Oppenheimer, the American theoretical physicist who is credited with the invention of the atomic bomb.',
+    release: {
+        year: '2023',
+        month: '7',
+        day: '20',
+    },
+    country: 'United States',
+    language: 'English',
     genre: 'Drama',
+    director: {
+        name: 'Christopher Nolan',
+        bio: 'Christopher Edward Nolan is a British-American film director, producer, and screenwriter. His films have grossed over $5 billion worldwide, and he is one of the highest-grossing directors in history. Having made his directorial debut with Following, Nolan gained considerable attention for his second feature, Memento, for which he received numerous accolades.',
+        doB: 'July 30, 1970',
+        doD: 'alive',
     },
-    {
+    featured: false,
+    },
+     {
     titleEn: 'The Great Beauty',
     titleOrig: 'La Grande Bellezza',
     director: 'Paolo Sorrentino',
@@ -64,52 +128,126 @@ let films = [
     genre: 'Drama',
     },
     {
-    titleEn: 'El Topo',
-    titleOrig: 'El topo',
-    director: 'Alejandro Jodorowsky',
-    country: ['Mexico', 'United States'],
-    languages: 'Spanish',
-    year: '1970',
-    genre: 'Drama',
+    id: '6',
+    title: 'The Great Beauty',
+    title_org: 'La Grande Bellezza',
+    imgURL: '#',
+    description: 'Jep Gambardella has seduced his way through the lavish nightlife of Rome for decades, but after his 65th birthday and a shock from the past, Jep looks past the nightclubs and parties to find a timeless landscape of absurd, exquisite beauty.',
+    release: {
+        year: '2013',
+        month: '5',
+        day: '21',
     },
-    {
-    titleEn: 'Suspiria',
-    titleOrig: 'Suspiria',
-    director: 'Dario Argento',
     country: 'Italy',
-    languages: ['Italian', 'German', 'Russian', 'English'],
-    year: '1977',
+    language: 'Italian',
+    genre: 'Drama',
+    director: {
+        name: 'Paolo Sorrentino',
+        bio: 'Paolo Sorrentino is an Italian film director, screenwriter, and writer. Sorrentino was born in Naples. His first film as screenwriter, The Dust of Naples, was released in 1998. He also began directing short movies, including L\'amore non ha confini in 1998 and La notte lunga in 2001.',
+        doB: 'May 31, 1970',
+        doD: 'alive',
+    },
+    featured: false,
+    },
+    {
+    id: '7',
+    title: 'El Topo',
+    title_org: 'El Topo',
+    imgURL: '#',
+    description: 'The mysterious figure, El Topo, known as the best gunfighter in the west, plays two rival gunfighters against each other for his own amusement.',
+    release: {
+        year: '1970',
+        month: '28',
+        day: '2',
+    },
+    country: 'Mexico',
+    language: 'Spanish',
+    genre: 'Western',
+    director: {
+        name: 'Alejandro Jodorowsky',
+        bio: 'Alejandro Jodorowsky Prullansky is a Chilean-French filmmaker. Since 1948, Jodorowsky has worked as a novelist, a storyteller, a poet, a playwright, an essayist, a film director and producer, an actor in cinematic and theatre productions, a theatre director, a screenwriter, a film editor, a comics writer, a musician and composer, a philosopher, a puppeteer, a mime, a psychologist and psychoanalyst, a draughtsman, a painter',
+        doB: 'February 17, 1929',
+        doD: 'alive',
+    },
+    featured: false,
+    },
+    {
+    id: '8',
+    title: 'Suspiria',
+    title_org: 'Suspiria',
+    imgURL: '#',
+    description: 'A newcomer to a fancy ballet academy gradually comes to realize that the school is a front for something far more sinister and supernatural amidst a series of grisly murders.',
+    release: {
+        year: '1977',
+        month: '2',
+        day: '1',
+    },
+    country: 'Italy',
+    language: 'English',
     genre: 'Horror',
+    director: {
+        name: 'Dario Argento',
+        bio: 'Dario Argento is an Italian film director, producer, film critic and screenwriter. He is best known for his work in the horror film genre during the 1970s and 1980s, particularly in the subgenre known as giallo, and for his influence on modern horror films.',
+        doB: 'September 7, 1940',
+        doD: 'alive',
+    },
+    featured: true
     },
     {
-    titleEn: 'Metropolis',
-    titleOrig: 'Metropolis',
-    director: 'Fritz Lang',
+    id: '9',
+    title: 'Metropolis',
+    title_org: 'Metropolis',
+    imgURL: '#',
+    description: 'In a futuristic city sharply divided between the working class and the city planners, the son of the city\'s mastermind falls in love with a working class prophet who predicts the coming of a savior to mediate their differences.',
+    release: {
+        year: '1927',
+        month: '1',
+        day: '10',
+    },
     country: 'Germany',
-    languages: ['Silent','German'],
-    year: '1927',
+    language: 'Silent',
     genre: 'Drama',
+    director: {
+        name: 'Fritz Lang',
+        bio: 'Friedrich Christian Anton "Fritz" Lang was an Austrian-German-American filmmaker, screenwriter, and occasional film producer and actor. One of the best-known émigrés from Germany\'s school of Expressionism, he was dubbed the "Master of Darkness" by the British Film Institute.',
+        doB: 'December 5, 1890',
+        doD: 'August 2, 1976',
+    },
+    featured: true
     },
     {
-    titleEn: 'Black Orpheus',
-    titleOrig: 'Orfeau Negro',
-    director: 'Marcel Camus',
+    id: '10',
+    title: 'Black Orpheus',
+    title_org: 'Orfeau Negro',
+    imgURL: '#',
+    description: 'The romance of Orpheus and Eurydice, a popular mythic legend that has been retold in the beautiful love story of a taxi driver that ends up in a tragedy, during the carnival in Brazil.',
+    release: {
+        year: '1959',
+        month: '6',
+        day: '7'
+    },
     country: ['Brazil', 'France', 'Italy'],
-    languages: 'Portuguese',
-    year: '1959',
+    language: 'Portuguese',
     genre: 'Drama',
+    director: {
+        name: 'Marcel Camus',
+        bio: 'Marcel Camus was a French director who won international acclaim for his second film, Orfeu Negro (Black Orpheus) in 1958. The film was praised for its use of exotic settings and brilliant spectacle and won first prize at both the Cannes and Venice film festivals as well as an Oscar from the Academy of Motion Picture Arts and Sciences.',
+        doB: 'April 21, 1912',
+        doD: ' January 13, 1982',
+    },
+    featured: true
     },
 ];
-
-// Serve documentation.html from public directory
+ 
+// Serve documentation.html (static)
 app.use('/documentation', express.static('public', {index: 'documentation.html'}));
 
-// Define route for homepage
+// Get homepage
 app.get('/', (req, res) => {
     res.send('Welcome to Cinephile!');
 });
 
-// Define route to fetch film data
+// Get film data
 app.get('/films', (req, res) => {
     res.json(films);
 });
