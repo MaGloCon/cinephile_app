@@ -28,15 +28,12 @@ let movies = [
     },
     country: ['Soviet Union', 'Armenia'],
     language: 'Armenian',
-    genre: {
-      genreName: 'Drama',
-      genreDescription: 'The Drama genre in film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles.',
-    },
+    genre: 'Drama',
     director: {
         name: 'Sergei Parajanov',
         bio: 'Sergei Iosifovich Parajanov was an Armenian film director and screenwriter. Parajanov is regarded by film critics, film historians and filmmakers to be one of the greatest and most influential filmmakers in cinema history.',
-        dob: 'January 9, 1924',
-        dod: 'July 20, 1990',
+        doB: 'January 9, 1924',
+        doD: 'July 20, 1990',
     },
     featured: true,
     },
@@ -53,15 +50,12 @@ let movies = [
     },
     country: 'United States',
     language: 'English',
-    genre: {
-      genreName: 'Horror',
-      genreDescription: 'The Horror genre in cinema is characterized by the presence of monsters, ghosts, or other supernatural elements. Horror films often feature scenes that startle the viewer, and the genre is often associated with the macabre and the supernatural. Horror films are designed to elicit fear and terror from the audience, and they often feature scenes that are designed to shock or scare the viewer.',
-    },
-      director: {
+    genre: 'Horror',
+    director: {
         name: 'Robert Eggers',
         bio: 'Robert Houston Eggers is an American filmmaker and production designer. He is best known for writing and directing the historical horror films The Witch and The Lighthouse, as well as directing and co-writing the historical fiction epic film The Northman. ',
-        dob: 'July 7, 1983',
-        dod: 'alive',
+        doB: 'July 7, 1983',
+        doD: 'alive',
     },
     featured: false,
     },
@@ -78,15 +72,12 @@ let movies = [
     },
     country: 'United States',
     language: 'English',
-    genre: {
-      genreName: 'Drama',
-      genreDescription: 'The Drama genre in film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles.',
-    },
+    genre: 'Drama',
     director: {
         name: 'Damien Chazelle',
         bio: 'Damien Sayre Chazelle is an American film director, producer, and screenwriter. He is best known for his films Whiplash and La La Land, for which he received several accolades, including the Golden Globe Award and the Academy Award for Best Director, making him the youngest person to win either award at the age of 32.',
-        dob: 'January 19, 1985',
-        dod: 'alive',
+        doB: 'January 19, 1985',
+        doD: 'alive',
     },
     featured: false,
     },
@@ -103,15 +94,12 @@ let movies = [
     },
     country: 'United Kingdom',
     language: 'English',
-    genre: {
-      genreName: 'Comedy',
-      genreDescription: 'The Comedy genre in film is a genre that is designed to make the audience laugh. Comedies are light-hearted dramas, crafted to amuse, entertain, and provoke enjoyment. The comedy genre often exaggerates situations, language, action, and characters. Comedies can be satirical, slapstick, dark, or romantic.',
-    },
+    genre: 'Comedy',
     director: {
         name: 'Armando Iannucci',
         bio: 'Armando Giovanni Iannucci is a Scottish satirist, writer, director, and radio producer. Born in Glasgow to Italian parents, Iannucci studied at the University of Glasgow followed by the University of Oxford, leaving graduate work on a PhD about John Milton to pursue a career in comedy. ',
-        dob: 'November 28, 1963',
-        dod: 'alive',
+        doB: 'November 28, 1963',
+        doD: 'alive',
     },
     featured: true,
     },
@@ -128,17 +116,23 @@ let movies = [
     },
     country: 'United States',
     language: 'English',
-    genre: {
-      genreName: 'Drama',
-      genreDescription: 'The Drama genre in film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles.',
-    },
+    genre: 'Drama',
     director: {
         name: 'Christopher Nolan',
         bio: 'Christopher Edward Nolan is a British-American film director, producer, and screenwriter. His films have grossed over $5 billion worldwide, and he is one of the highest-grossing directors in history. Having made his directorial debut with Following, Nolan gained considerable attention for his second feature, Memento, for which he received numerous accolades.',
-        dob: 'July 30, 1970',
-        dod: 'alive',
+        doB: 'July 30, 1970',
+        doD: 'alive',
     },
     featured: false,
+    },
+     {
+    titleEn: 'The Great Beauty',
+    titleOrig: 'La Grande Bellezza',
+    director: 'Paolo Sorrentino',
+    country: 'Italy',
+    languages: 'Italian',
+    year: '2013',
+    genre: 'Drama',
     },
     {
     id: '6',
@@ -153,15 +147,12 @@ let movies = [
     },
     country: 'Italy',
     language: 'Italian',
-    genre: {
-        name: 'Drama',
-        description: 'Drama',
-    },
+    genre: 'Drama',
     director: {
         name: 'Paolo Sorrentino',
         bio: 'Paolo Sorrentino is an Italian film director, screenwriter, and writer. Sorrentino was born in Naples. His first film as screenwriter, The Dust of Naples, was released in 1998. He also began directing short movies, including L\'amore non ha confini in 1998 and La notte lunga in 2001.',
-        dob: 'May 31, 1970',
-        dod: 'alive',
+        doB: 'May 31, 1970',
+        doD: 'alive',
     },
     featured: false,
     },
@@ -182,8 +173,8 @@ let movies = [
     director: {
         name: 'Alejandro Jodorowsky',
         bio: 'Alejandro Jodorowsky Prullansky is a Chilean-French filmmaker. Since 1948, Jodorowsky has worked as a novelist, a storyteller, a poet, a playwright, an essayist, a film director and producer, an actor in cinematic and theatre productions, a theatre director, a screenwriter, a film editor, a comics writer, a musician and composer, a philosopher, a puppeteer, a mime, a psychologist and psychoanalyst, a draughtsman, a painter',
-        dob: 'February 17, 1929',
-        dod: 'alive',
+        doB: 'February 17, 1929',
+        doD: 'alive',
     },
     featured: false,
     },
@@ -204,8 +195,8 @@ let movies = [
     director: {
         name: 'Dario Argento',
         bio: 'Dario Argento is an Italian film director, producer, film critic and screenwriter. He is best known for his work in the horror film genre during the 1970s and 1980s, particularly in the subgenre known as giallo, and for his influence on modern horror films.',
-        dob: 'September 7, 1940',
-        dod: 'alive',
+        doB: 'September 7, 1940',
+        doD: 'alive',
     },
     featured: true
     },
@@ -222,15 +213,12 @@ let movies = [
     },
     country: 'Germany',
     language: 'Silent',
-    genre: {
-      genreName: 'Drama',
-      genreDescription: 'The Drama genre in film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles.',
-    },
+    genre: 'Drama',
     director: {
         name: 'Fritz Lang',
         bio: 'Friedrich Christian Anton "Fritz" Lang was an Austrian-German-American filmmaker, screenwriter, and occasional film producer and actor. One of the best-known émigrés from Germany\'s school of Expressionism, he was dubbed the "Master of Darkness" by the British Film Institute.',
-        dob: 'December 5, 1890',
-        dod: 'August 2, 1976',
+        doB: 'December 5, 1890',
+        doD: 'August 2, 1976',
     },
     featured: true
     },
@@ -247,15 +235,12 @@ let movies = [
     },
     country: ['Brazil', 'France', 'Italy'],
     language: 'Portuguese',
-    genre: {
-      genreName: 'Drama',
-      genreDescription: 'The Drama genre in film is a genre that relies on the emotional and relational development of realistic characters. While Drama film relies heavily on this kind of development, dramatic themes play a large role in the plot as well. Often, these dramatic themes are taken from intense, real life issues. Whether heroes or heroines are facing a conflict from the outside or a conflict within themselves, Drama film aims to tell an honest story of human struggles.',
-    },
+    genre: 'Drama',
     director: {
         name: 'Marcel Camus',
-        bio: 'Marcel Camus was a French director who won innoternational acclaim for his second film, Orfeu Negro (Black Orpheus) in 1958. The film was praised for its use of exotic settings and brilliant spectacle and won first prize at both the Cannes and Venice film festivals as well as an Oscar from the Academy of Motion Picture Arts and Sciences.',
-        dob: 'April 21, 1912',
-        dod: ' January 13, 1982',
+        bio: 'Marcel Camus was a French director who won international acclaim for his second film, Orfeu Negro (Black Orpheus) in 1958. The film was praised for its use of exotic settings and brilliant spectacle and won first prize at both the Cannes and Venice film festivals as well as an Oscar from the Academy of Motion Picture Arts and Sciences.',
+        doB: 'April 21, 1912',
+        doD: ' January 13, 1982',
     },
     featured: true
     },
@@ -263,11 +248,12 @@ let movies = [
 
 let users = [
         {
-          username: 'Tuv',
+          id: 1,
+          username: 'Tuvok',
           Password:  'tkim!123',
           Email:  'tkim@gmail.com',
           dob:  'March 21, 1989',
-          favoriteMovies: []
+          favoriteMovies: ['Oppenheimer']
         },
         {
           id: 2,
@@ -328,33 +314,10 @@ app.get('/movies', (req, res) => {
     }
   })
 
-// get genre by movie
-  app.get('/movies/genre/:name', (req, res)=>{
-    const  {genreName} = req.params;
-    const genre = movies.find(movie => movie.genre.name === genreName).genre; 
-
-    if(genre){
-      res.status(200).json(genre);
-    }else{
-      res.status(400).send('no such genre');
-    }
-  })
-
-  // get director by movie
-  app.get('/movies/director/:directorName', (req, res)=>{
-    const  {directorName} = req.params;
-    const director = movies.find(movie => movie.director.name === directorName).director; 
-
-    if(director){
-      res.status(200).json(director);
-    }else{
-      res.status(400).send('no such director');
-    }
-  });
 
 //Create new user
   app.post('/users', (req, res) => {
-    let {newUser} = req.body;
+    let newUser = req.body;
 
     if (!newUser.username) {
       const message = 'Missing name';
