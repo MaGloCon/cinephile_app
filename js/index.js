@@ -261,45 +261,43 @@ let movies = [
     },
 ];
 
-let users = [
+const users = [
         {
-          username: 'Tuv',
-          Password:  'tkim!123',
-          Email:  'tkim@gmail.com',
-          dob:  'March 21, 1989',
-          favoriteMovies: []
+          username: "Tuv",
+          Password:  "tkim!123",
+          Email:  "tkim@gmail.com",
+          dob:  "March 21, 1989",
+          favMovies: [""]
         },
         {
-          id: 2,
           username: "Ronny",
           Password: "Rococo!456",
           Email: "maronny@gmail.com",
           dob: "May 30, 2000",
-          favoriteMovies: [] 
+          favMovies: [""] 
         },
         {
-          id: 3,
           username: "Joseph",
           Password: "fliX@789",
           Email: "rony@gmail.com",
           dob: "July 12, 1978",
-          favoriteMovies: ["Inception"] 
+          favMovies: ["Inception"] 
         },
         {
-        id: 4,
-        username: "Chris",
-        email: 'chrisholt@gmail.com',
-        password: 'password123',
-        dob: 'January 13, 1992',
-        favMovies: [],
+          username: "Chris",
+          email: 'chrisholt@gmail.com',
+          password: 'password123',
+          dob: 'January 13, 1992',
+          favMovies: ["The Great Beauty"],
+          id: "ea372b34-b7b2-428a-ba9e-d844389fb868"
         },
         {
-        id: 5,
-        username: "Mary", 
-        email: 'marynolan@gmail.com',
-        password: '$filmGeek',
-        dob: 'January 13, 1992',
-        favMovies: ['Whiplash'],
+          username: "Mary", 
+          email: 'marynolan@gmail.com',
+          password: '$filmGeek',
+          dob: 'January 13, 1992',
+          favMovies: ['Whiplash'],
+          id: "2955f7c6-a185-4e97-9a43-2816841ca28c"
         },
         ];
  
@@ -315,6 +313,7 @@ app.get('/', (req, res) => {
 app.get('/movies', (req, res) => {
     res.status(200).json(movies);
 });
+
 
 //  Get data about a single movie, by title
   app.get('/movies/:title', (req, res)=>{
@@ -352,25 +351,50 @@ app.get('/movies', (req, res) => {
     }
   });
 
-//Create new user
-  app.post('/users', (req, res) => {
-    let {newUser} = req.body;
+//Get all users
+app.get('/users', (req, res) => {
+    res.status(200).json(users);
+});
 
-    if (!newUser.username) {
-      const message = 'Missing name';
-      res.status(400).send(message);
-    } else{
-      newUser.id = uuid.v4();
-      users.push(newUser);
-      res.status(201).send(newUser);
-    }
-  });
+// Get a single user by ID
+app.get('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const user = users.find(user => user.id == id);
 
-// Update user info by username
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).send('User not found'); 
+  }
+});
+
+//Create new user (with id)
+app.post('/users', (req, res) => {
+  let { username, email, password, dob, favMovies } = req.body;
+
+  if (!username || !email || !password || !dob) {
+    const message = 'Missing field';
+    res.status(400).send(message);
+  } else {
+    let newUser = {
+      username: username,
+      email: email,
+      password: password,
+      dob: dob,
+      favMovies: favMovies,
+      id: uuid.v4()
+    };
+
+    users.push(newUser);
+    res.status(201).send(newUser);
+  }
+});
+
+// Update user info by id
     app.put('/users/:id', (req, res) => {
-    const { username } = req.params;
+    const {id} = req.params;
     const { username: newUsername } = req.body;
-    const user = users.find(user => user.username === username);
+    const user = users.find(user => user.id == id);
   
     if (user) {
       user.username = newUsername;
@@ -381,36 +405,32 @@ app.get('/movies', (req, res) => {
   });
 
 //add a movie to user favorites list
-
   app.post('/users/:id/:title', (req, res)=>{
     const {id, title} = req.params;
 
     let user = users.find(user => user.id == id);
     if (user){
-      user.favoriteMovies.push(title);
+      user.favMovies.push(title);
       res.status(200).send(`${title} has been added to user ${id}'s array.`);
     }else{
       res.status(400).send('no such user');
     }
   })
 
-  // remove a movie from user favorites list
-
+// Delete a movie from user favorites list
   app.delete('/users/:id/:title', (req, res)=>{
-    const {id, title} = req.params;
+  const {id, title} = req.params;
 
-    let user = users.find(user => user.id == id);
-    if (user){
-
-      user.favoriteMovies = user.favoriteMovies.filter(title => title !== title);
-      res.status(200).send(`${title} has been removed to user ${id}'s array.`);
-    }else{
-      res.status(400).send('no such user');
-    }
-  })
+  let user = users.find(user => user.id == id);
+  if (user){
+    user.favMovies = user.favMovies.filter(movieTitle => movieTitle !== title);
+    res.status(200).send(`${title} has been removed`);
+  }else{
+    res.status(400).send('no such user');
+  }
+})
 
   // delete existing users 
-
   app.delete('/users/:id', (req, res)=>{
     const {id} = req.params;
 
