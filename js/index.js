@@ -141,22 +141,18 @@ app.get('/movies/director/:name', async (req, res) => {
   }
 });
 
-// Get details (name & description) of a specific director by movie title -- res: director object
-app.get('/movies/:title/director/:name', async (req, res) => {
-  const { title, name } = req.params;
+// Get director by movie title -- res: array of director objects
+app.get('/movies/:title/director', async (req, res) => {
+  const { title } = req.params;
   try {
     const movie = await Movies.findOne({Title: title});
-    if (!movie || !movie.Director) {
+    if (!movie || !movie.Director || movie.Director.length === 0) {
       return res.status(400).send('No such movie or the movie does not have a director');
     }
-    const director = movie.Director.find(director => director.Name === name);
-    if (!director) {
-      return res.status(400).send('No such director for this movie');
-    }
-    res.status(200).json(director);
+    res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the director');
+    res.status(500).send('An error occurred while trying to retrieve the director(s)');
   }
 });
 
@@ -267,7 +263,45 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
   }
 });
 
+// Update a movie in a user's list of favorites
+app.put('/users/:Username/movies/:OldMovieID/:NewMovieID', async (req, res) => {
+  try {
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username: req.params.Username, FavoriteMovies: req.params.OldMovieID },
+      { $set: { "FavoriteMovies.$": req.params.NewMovieID } },
+      { new: true }
+    );
+    if (!updatedUser) {
+      res.status(400).send('Movie ' + req.params.OldMovieID + ' was not found in the favorite list of ' + req.params.Username);
+    } else {
+      res.status(200).send('Movie ' + req.params.OldMovieID + ' was updated to ' + req.params.NewMovieID + ' in the favorite list of ' + req.params.Username);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  }
+});
+
 // Remove a movie from a user's list of favorites
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+  try {
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      { $pull: { FavoriteMovies: req.params.MovieID } },
+      { new: true }
+    );
+    if (!updatedUser) {
+      res.status(400).send('Movie ' + req.params.MovieID + ' was not found in the favorite list of ' + req.params.Username);
+    } else {
+      res.status(200).send('Movie ' + req.params.MovieID + ' was deleted from the favorite list of ' + req.params.Username);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  }
+});
+
+// Remove a user by Username
 app.delete('/users/:Username', async (req, res) => {
   try {
     const user = await Users.findOneAndDelete({ Username: req.params.Username });
