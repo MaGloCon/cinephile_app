@@ -6,6 +6,23 @@
     <title>Cinephile Documentation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+<style>
+   .table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+} 
+</style>
 <body>
     <div class="container">
         <h1 class="mt-4 mb-4">Cinephile API Documentation</h1>
@@ -14,7 +31,7 @@
         movies, directors, and genres. Users will be able to sign up, update their
         personal information, and create a list of their favorite movies.</p>
         <h2 class="mb-3">Movie Endpoints</h2>
-            <table class="table table-striped table-bordered">
+            <table class="table table-responsive table-striped table-bordered">
                 <thead class="table-dark">
                     <tr>
                         <th class="align-middle">Business Logic</th>
@@ -40,28 +57,57 @@
                         <td>
                             A JSON object holding data about the requested film: <br />
                             <code>
-                                { <br />
-                                    id: 1,<br />
-                                    title: 'The Seventh Seal',<br /> 
-                                    title_org: 'Det sjunde inseglet',<br />
-                                    imgURL: '#',<br />
-                                    description: 'A Knight and his squire are home from the crusades. Black Death is sweeping their country. As they approach home, Death appears to the knight and tells him it is his time. The knight challenges Death to a chess game for his life.',<br />
-                                    release: {<br /> 
-                                    &nbsp;&nbsp;year: '1957',<br />
-                                    &nbsp;&nbsp;month: '3',<br />
-                                    &nbsp;&nbsp;day: '16'<br />
-                                    },<br />
-                                    country: 'Sweden',<br />
-                                    language: 'Swedish',<br />
-                                    genre: 'Drama',<br /> 
-                                    director: {<br /> 
-                                    &nbsp;&nbsp;name: 'Ingmar Bergman',<br />  
-                                    &nbsp;&nbsp;bio: 'Ingmar Bergman was a Swedish film and theatre director and screenwriter.',<br /> 
-                                    &nbsp;&nbsp;dob: '14 July 1918'<br />
-                                    &nbsp;&nbsp;dob: '30 July 2007'<br />
-                                    },<br />
-                                    featured: true<br />
-                                },
+                                {<br />
+                                "_id": { <br />
+                                    "$oid": "663a9afcbccd710c53c89437"<br />
+                                },<br />
+                                "Title": "The Seventh Seal",<br />
+                                "TitleOrigin": ["Det sjunde inseglet"],<br />
+                                "Year": "1957",<br />
+                                "Countries": ["Sweden"],<br />
+                                "Languages": ["Swedish"],<br />
+                                "Description": "Ingmar Bergman's existential masterpiece \"The Seventh Seal\" is a haunting meditation on faith, death, and the meaning of life. Set during the Black Death in medieval Europe, the film follows a knight who plays a game of chess with Death as he grapples with his own mortality.",<br />
+                                "Genre": [<br />
+                                {<br />
+                                &nbsp;&nbsp;"Name": "Historical",<br />
+                                &nbsp;&nbsp;"Description": "Journey through the corridors of time and bear witness to the echoes of bygone eras with films that meticulously recreate pivotal moments in history. With painstaking attention to detail and a reverence for authenticity, these cinematic masterpieces transport viewers to distant epochs, where they confront the timeless themes of power, revolution, and the inexorable march of progress."<br />
+                                },<br />
+                                {<br />
+                                &nbsp;&nbsp;"Name": "Drama",<br />
+                                &nbsp;&nbsp;"Description": "Immerse yourself in the rich tapestry of human experience with films that plumb the depths of emotion and existential angst. Through exquisitely crafted narratives and powerhouse performances, these cinematic dramas explore the complexities of love, loss, and the search for meaning in a world fraught with uncertainty."<br />
+                                }<br />
+                                ],<br />
+                                "Director": [<br />{<br />
+                                &nbsp;&nbsp;"Name": "Ingmar Bergman",<br />
+                                &nbsp;&nbsp;"Bio": "Ingmar Bergman was a Swedish filmmaker widely regarded as one of the greatest auteurs in the history of cinema. Born in 1918, Bergman's films often explored themes of existentialism, faith, and the human condition. He gained international recognition with works like \"The Seventh Seal,\" \"Wild Strawberries,\" and \"Persona,\" which showcased his mastery of psychological depth and visual storytelling. Bergman's influence on world cinema is profound, with his films inspiring generations of filmmakers and earning him numerous awards, including three Academy Awards for Best Foreign Language Film.",<br />
+                                &nbsp;&nbsp;"Birth": "1918",<br />
+                                &nbsp;&nbsp;"Death": "2007"<br />
+                                }<br />
+                                ],<br />
+                                "Actors": [
+                                "Max von Sydow", 
+                                "Bengt Ekerot", 
+                                "Nils Poppe",
+                                "Gunnel Lindblom", 
+                                "Bibi Andersson"
+                                ],<br />
+                                "ImagePath": "https://res.cloudinary.com/djyfpaduv/image/upload/v1714924976/seventhSeal_mgju6a.webp",<br />
+                                "Featured": false<br />
+                                }
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return data about a genre by name</td>
+                        <td>/movies/genre/:genreName</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>A JSON object holding data about the genre ex:
+                            <code>
+                                {<br />
+                                "Name": "Historical",<br />
+                                "Description": "Journey through the corridors of time and bear witness to the echoes of bygone eras with films that meticulously recreate pivotal moments in history. With painstaking attention to detail and a reverence for authenticity, these cinematic masterpieces transport viewers to distant epochs, where they confront the timeless themes of power, revolution, and the inexorable march of progress."
+                                }
                             </code>
                         </td>
                     </tr>
@@ -72,7 +118,11 @@
                         <td>N/A</td>
                         <td>A JSON object holding data about the genre of a specific movie ex:
                             <code>
-                                "Horror"
+                                {
+    "_id": "663c1357f0b063ef8663e2ee",
+    "Name": "Drama",
+    "Description": "Immerse yourself in the rich tapestry of human experience with films that plumb the depths of emotion and existential angst. Through exquisitely crafted narratives and powerhouse performances, these cinematic dramas explore the complexities of love, loss, and the search for meaning in a world fraught with uncertainty."
+}
                             </code>
                         </td>
                     </tr>

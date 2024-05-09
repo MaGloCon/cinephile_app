@@ -5,15 +5,21 @@
   "main": "js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node js/index.js"
+    "start": "node js/index.js",
+    "dev": "nodemon js/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "cloudinary": "^2.2.0",
     "express": "^4.19.2",
-    "morgan": "^1.10.0",
+    "mongoose": "^8.3.4",
     "uuid": "^9.0.1"
   },
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0"
+  }
 }
