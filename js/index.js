@@ -68,28 +68,31 @@ app.get('/movies/:title', (req, res) => {
     });
 });
 
-// Get genre by name
-app.get('/movies/genre/:name', (req, res) => {
-  const { name } = req.params;
-  Movies.find()
+//Get all movies of a specific genre -- res: array of movies
+app.get('/movies/genre/:Name/movies', (req, res) => {
+  const { Name } = req.params;
+  Movies.find({ 'Genre.Name': Name })
     .then(movies => {
       if (!movies || movies.length === 0) {
-        return res.status(404).send('No movies found');
+        return res.status(400).send('No movies found in this genre');
       }
-      let foundGenre = null;
-      for(let movie of movies) {
-        for(let genre of movie.Genre) {
-          if (genre.Name === name) {
-            foundGenre = genre;
-            break;
-          }
-        }
-        if(foundGenre) break;
-      }
-      if (!foundGenre) {
+      res.status(200).json(movies);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the movies');
+    });
+});
+
+// Get details (name & description) of a specific Genre by Genre Name -- res: genre object
+app.get('/movies/genre/:name', (req, res) => {
+  const  { name } = req.params;
+  Movies.findOne({ 'Genre.Name': name }, {'Genre.$': 1})
+    .then(movie => {
+      if (!movie || !movie.Genre || movie.Genre.length === 0) {
         return res.status(400).send('no such genre');
       }
-      res.status(200).json(foundGenre);
+      res.status(200).json(movie.Genre[0]); 
     })
     .catch(err => {
       console.error(err);
@@ -97,10 +100,44 @@ app.get('/movies/genre/:name', (req, res) => {
     });
 });
 
-// Get director by name 
-app.get('/movies/Director/:Name', (req, res) => {
-  const  { Name } = req.params;
-  Movies.findOne({ 'Director.Name': Name })
+// Get all genres of a specific movie by title
+app.get('/movies/:title/genre', (req, res) => {
+  const { title } = req.params;
+  Movies.findOne({Title: title})
+    .then(movie => {
+      if (!movie || !movie.Genre || movie.Genre.length === 0) {
+        return res.status(400).send('No such movie or the movie does not have a genre');
+      }
+      res.status(200).json(movie.Genre);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the genres');
+    });
+});
+
+
+// Get all movies directed by a specific director -- res: array of movies
+app.get('/movies/director/:name/movies', (req, res) => {
+  const { Name } = req.params;
+  Movies.find({ 'Director.Name': Name })
+    .then(movies => {
+      if (!movies || movies.length === 0) {
+        return res.status(400).send('No movies found from this director');
+      }
+      res.status(200).json(movies);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the movies');
+    });
+});
+
+
+// Get details (name & description) of a specific director by Name -- res: director object
+app.get('/movies/director/:name', (req, res) => {
+  const  { name } = req.params;
+  Movies.findOne({ 'Director.Name': name })
     .then(movie => {
       if (!movie || !movie.Director) {
         return res.status(400).send('no such director');
@@ -112,6 +149,60 @@ app.get('/movies/Director/:Name', (req, res) => {
       res.status(500).send('An error occurred while trying to retrieve the director');
     });
 });
+
+// Get details (name & description) of a specific director by movie title -- res: director object
+app.get('/movies/:title/director/:name', (req, res) => {
+  const { title, name } = req.params;
+  Movies.findOne({Title: title})
+    .then(movie => {
+      if (!movie || !movie.Director) {
+        return res.status(400).send('No such movie or the movie does not have a director');
+      }
+      const director = movie.Director.find(director => director.Name === name);
+      if (!director) {
+        return res.status(400).send('No such director for this movie');
+      }
+      res.status(200).json(director);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the director');
+    });
+});
+
+// Get movies by language -- res: array of movies
+app.get('/movies/language/:language', (req, res) => {
+  const { Language } = req.params;
+  Movies.find({Languages: {$in: [Language]}})
+    .then(movies => {
+      if (!movies || movies.length === 0) {
+        return res.status(400).send('No movies found in this language');
+      }
+      res.status(200).json(movies);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the movies');
+    });
+});
+
+// Get movies by country -- res: array of movies
+app.get('/movies/country/:country', (req, res) => {
+  const { Country } = req.params;
+  Movies.find({Countries: {$in: [Country]}})
+    .then(movies => {
+      if (!movies || movies.length === 0) {
+        return res.status(400).send('No movies found from this country');
+      }
+      res.status(200).json(movies);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('An error occurred while trying to retrieve the movies');
+    });
+});
+
+
 
 //Get all users
 app.get('/users', async (req, res) => {
