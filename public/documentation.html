@@ -43,19 +43,20 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Return a list of All movies to the user</td>
+                        <td>Return a list of all movies to the user</td>
                         <td>/movies</td>
                         <td>GET</td>
                         <td>N/A</td>
-                        <td> A JSON object holding data holding data about all films</td>
+                        <td> JSON objects holding data about all movie</td>
                     </tr>
+<!--Title-->
                     <tr>
                         <td>Return data about a single film by title to the user</td>
                         <td>/movies/:title</td>
                         <td>GET</td>
                         <td>N/A</td>
                         <td>
-                            A JSON object holding data about the requested film: <br />
+                            A JSON object holding data about a single film: <br />
                             <code>
                                 {<br />
                                 "_id": { <br />
@@ -66,20 +67,20 @@
                                 "Year": "1957",<br />
                                 "Countries": ["Sweden"],<br />
                                 "Languages": ["Swedish"],<br />
-                                "Description": "Ingmar Bergman's existential masterpiece \"The Seventh Seal\" is a haunting meditation on faith, death, and the meaning of life. Set during the Black Death in medieval Europe, the film follows a knight who plays a game of chess with Death as he grapples with his own mortality.",<br />
+                                "Description": "Ingmar Bergman's existential masterpiece \"The Seventh Seal\" is ...",<br />
                                 "Genre": [<br />
                                 {<br />
                                 &nbsp;&nbsp;"Name": "Historical",<br />
-                                &nbsp;&nbsp;"Description": "Journey through the corridors of time and bear witness to the echoes of bygone eras with films that meticulously recreate pivotal moments in history. With painstaking attention to detail and a reverence for authenticity, these cinematic masterpieces transport viewers to distant epochs, where they confront the timeless themes of power, revolution, and the inexorable march of progress."<br />
+                                &nbsp;&nbsp;"Description": "Journey through the corridors of time and bear witness to ..."<br />
                                 },<br />
                                 {<br />
                                 &nbsp;&nbsp;"Name": "Drama",<br />
-                                &nbsp;&nbsp;"Description": "Immerse yourself in the rich tapestry of human experience with films that plumb the depths of emotion and existential angst. Through exquisitely crafted narratives and powerhouse performances, these cinematic dramas explore the complexities of love, loss, and the search for meaning in a world fraught with uncertainty."<br />
+                                &nbsp;&nbsp;"Description": "Immerse yourself in the rich tapestry of human experience ..."<br />
                                 }<br />
                                 ],<br />
                                 "Director": [<br />{<br />
                                 &nbsp;&nbsp;"Name": "Ingmar Bergman",<br />
-                                &nbsp;&nbsp;"Bio": "Ingmar Bergman was a Swedish filmmaker widely regarded as one of the greatest auteurs in the history of cinema. Born in 1918, Bergman's films often explored themes of existentialism, faith, and the human condition. He gained international recognition with works like \"The Seventh Seal,\" \"Wild Strawberries,\" and \"Persona,\" which showcased his mastery of psychological depth and visual storytelling. Bergman's influence on world cinema is profound, with his films inspiring generations of filmmakers and earning him numerous awards, including three Academy Awards for Best Foreign Language Film.",<br />
+                                &nbsp;&nbsp;"Bio": "Ingmar Bergman was a Swedish filmmaker ...",<br />
                                 &nbsp;&nbsp;"Birth": "1918",<br />
                                 &nbsp;&nbsp;"Death": "2007"<br />
                                 }<br />
@@ -98,40 +99,194 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Return data about a genre by name</td>
-                        <td>/movies/genre/:genreName</td>
+                        <td>Return all movies of a specific genre by the genre's name</td>
+                        <td>/movies/genre/:Name/movies</td>
                         <td>GET</td>
                         <td>N/A</td>
-                        <td>A JSON object holding data about the genre ex:
+                        <td>An array of JSON objects for all movies that have Genre Name in Genre array:
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>Return data about a specific genre by genre's name</td>
+                        <td>/movies/genre/:name'</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>A JSON objects containing genre name and description: <br />
                             <code>
-                                {<br />
-                                "Name": "Historical",<br />
-                                "Description": "Journey through the corridors of time and bear witness to the echoes of bygone eras with films that meticulously recreate pivotal moments in history. With painstaking attention to detail and a reverence for authenticity, these cinematic masterpieces transport viewers to distant epochs, where they confront the timeless themes of power, revolution, and the inexorable march of progress."
-                                }
+                            {<br />
+                            &nbsp;&nbsp;"_id": "663c1357f0b063ef8663e2ee",<br />
+                            &nbsp;&nbsp;"Name": "Drama",<br />
+                            &nbsp;&nbsp;"Description": "Immerse yourself in the rich tapestry of human experience ..."<br />
+                            }
                             </code>
                         </td>
                     </tr>
                     <tr>
-                        <td>Return data about a single movie's genre by title</td>
+                        <td>Return a single film's genre(s) by title of the film</td>
                         <td>/movies/:title/genre</td>
                         <td>GET</td>
                         <td>N/A</td>
-                        <td>A JSON object holding data about the genre of a specific movie ex:
+                        <td>An array of JSON object(s) holding data about genre(s) of a specific movie :<br />
                             <code>
-                                {
-    "_id": "663c1357f0b063ef8663e2ee",
-    "Name": "Drama",
-    "Description": "Immerse yourself in the rich tapestry of human experience with films that plumb the depths of emotion and existential angst. Through exquisitely crafted narratives and powerhouse performances, these cinematic dramas explore the complexities of love, loss, and the search for meaning in a world fraught with uncertainty."
-}
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663d197142d21bdce4e7ebc6",<br />
+                                &nbsp;&nbsp;&nbsp;"Name": "Crime",<br />
+                                &nbsp;&nbsp;&nbsp;"Description": "Explore the dark underbelly of society with films that ..."<br />
+                                &nbsp;&nbsp;},<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663d197142d21bdce4e7ebc7",<br />
+                                &nbsp;&nbsp;&nbsp;"Name": "Drama",<br />
+                                &nbsp;&nbsp;&nbsp;"Description": "Immerse yourself in the rich tapestry of human experience ..."<br />
+                                &nbsp;&nbsp;}<br />
+                                ]<br />
                             </code>
                         </td>
                     </tr>
                     <tr>
-                        <td>Return data about a director by title/name</td>
-                        <td>/movies/director/:directorName</td>
+                        <td>Returning a list of all movies by a specific director</td>
+                        <td>/movies/director/:name/movies</td>
                         <td>GET</td>
                         <td>N/A</td>
-                        <td>JSON</td>
+                        <td>An array of JSON object(s) holding data about all directors
+                            <code>
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c89419",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Oppenheimer",<br />
+                                &nbsp;&nbsp;&nbsp;//more data<br />
+                                &nbsp;&nbsp;},<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c89421",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Interstellar",<br />
+                                &nbsp;&nbsp;&nbsp;//more data<br />
+                                &nbsp;&nbsp;}<br />
+                                ]
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return details about a specific director by the director's name</td>
+                        <td>/movies/director/:name</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>A JSON object holding data about director<br />
+                            <code>
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663d198442d21bdce4e7ebcc",<br />
+                                &nbsp;&nbsp;&nbsp;"Name": "Quentin Tarantino",<br />
+                                &nbsp;&nbsp;&nbsp;"Bio": "Quentin Tarantino, the American filmmaker and screenwriter, ...",<br />
+                                &nbsp;&nbsp;&nbsp;"Birth": "1963",<br />
+                                &nbsp;&nbsp;&nbsp;"Death": null<br />
+                                &nbsp;&nbsp;}<br />
+                                ]
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return director(s) of a specific movie</td>
+                        <td>'/movies/:title/director'</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>An array of JSON objects containing director(s)<br />
+                            <code>
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663d23b02f78fbf4756f5c65",<br />
+                                &nbsp;&nbsp;&nbsp;"Name": "Daniel Kwan",<br />
+                                &nbsp;&nbsp;&nbsp;"Bio": "Daniel Kwan, one half of the visionary directing duo...",<br />
+                                &nbsp;&nbsp;&nbsp;"Birth": "1988",<br />
+                                &nbsp;&nbsp;&nbsp;"Death": null<br />
+                                &nbsp;&nbsp;},<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663d23b02f78fbf4756f5c66",<br />
+                                &nbsp;&nbsp;&nbsp;"Name": "Daniel Scheinert",<br />
+                                &nbsp;&nbsp;&nbsp;"Bio": "Daniel Scheinert, the dynamic force behind the visionary filmmaking duo...",<br />
+                                &nbsp;&nbsp;&nbsp;"Birth": "1987",<br />
+                                &nbsp;&nbsp;&nbsp;"Death": null<br />
+                                &nbsp;&nbsp;}<br />
+                                ]
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return all movies of a specific language</td>
+                        <td>/movies/language/:language</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>An array of JSON objects containing data about all movies that share the same language<br />
+                            <code>
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c8942f",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Fantastic Planet",<br />
+                                &nbsp;&nbsp;&nbsp;"TitleOrigin": [
+                                    "La Planète sauvage"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Year": "1973"_id": "663d23b02f78fbf4756f5c66",<br />
+                                &nbsp;&nbsp;&nbsp;"Countries": [
+                                    "France"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Languages": [
+                                "French"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;//More data<br />
+                                &nbsp;&nbsp;},<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c89434",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Breathless",<br />
+                                &nbsp;&nbsp;&nbsp;"TitleOrigin": [
+                                    "À Bout de Souffle"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Year": "1960",<br />
+                                &nbsp;&nbsp;&nbsp;"Countries": [
+                                    "France"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Languages": [
+                                    "French"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;//More data<br />
+                                &nbsp;&nbsp;}<br />
+                                ]<br />
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Return all movies released/made by a specific country</td>
+                        <td>/movies/country/:country'</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>An array of JSON objects containing all movies for a specific country<br />
+                            <code>
+                                [<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c8942f",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Fantastic Planet",<br />
+                                &nbsp;&nbsp;&nbsp;"TitleOrigin": [
+                                    "La Planète sauvage"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Year": "1973"_id": "663d23b02f78fbf4756f5c66",<br />
+                                &nbsp;&nbsp;&nbsp;"Countries": [
+                                    "France"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;//More data<br />
+                                &nbsp;&nbsp;},<br />
+                                &nbsp;&nbsp;{<br />
+                                &nbsp;&nbsp;&nbsp;"_id": "663a9afcbccd710c53c89434",<br />
+                                &nbsp;&nbsp;&nbsp;"Title": "Breathless",<br />
+                                &nbsp;&nbsp;&nbsp;"TitleOrigin": [
+                                    "À Bout de Souffle"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;"Year": "1960",<br />
+                                &nbsp;&nbsp;&nbsp;"Countries": [
+                                    "France"
+                                ],<br />
+                                &nbsp;&nbsp;&nbsp;//More data<br />
+                                &nbsp;&nbsp;}<br />
+                                ]<br />
+                            </code>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -149,49 +304,70 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Return a list of all users</td>
+                        <td>/users</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>An array of JSON objects holding data about all users</td>
+                    </tr>
+                    <tr>
+                        <td> Return a user by username</td>
+                        <td>/users/:Username</td>
+                        <td>GET</td>
+                        <td>N/A</td>
+                        <td>A JSON object holding data about a single user:<br /> 
+                            <code>
+                               {<br /> 
+                                "_id": "66392bb9dabb4f9c263d0fde",<br /> 
+                                "Username": "Tuv",<br /> 
+                                "Email": "tkim@gmail.com",<br /> 
+                                "Password": "tkim123",<br /> 
+                                "Birthday": "1985-02-19T00:00:00.000Z"<br /> 
+                                }, 
+                            </code>
+                    </tr>
+                    <tr>
                         <td>Create a new user</td>
                         <td>/users</td>
                         <td>POST</td>
-                        <td>A JSON object holding data from the user to be added:<br /> 
+                        <td>JSON object holding data from the user to be added:<br /> 
                             <code>
                                 {<br /> 
-                                    'name': "Chris", <br />
-                                    'email': 'chrisholt@gmail.com',<br />
-                                    'password': 'password123',<br />
-                                    'dob': 'January 13, 1992',<br />
-                                    'favMovies': [],<br /> 
-                                }        
+                                "Username": "Tuv",<br /> 
+                                "Email": "tkim@gmail.com",<br /> 
+                                "Password": "tkim123",<br /> 
+                                "Birthday": "1985-02-19T00:00:00.000Z"<br /> 
+                                },         
                             </code>
                         </td>
                         <td>A JSON object holding data from the user that has been added plus uuid:
                             <code>
-                                {
-                                "username": "Mary 3",
-                                "email": "marynolan@gmail.com",
-                                "password": "$filmGeek",
-                                "dob": "January 13, 1992",
-                                "favMovies": [
-                                    "Whiplash"
-                                ],
-                                "id": "bdbad77b-4118-4480-9ba3-1cdfaa7f8a68"
-                                }
+                                {<br /> 
+                                "_id": "66392bb9dabb4f9c263d0fde",<br /> 
+                                "Username": "Tuv",<br /> 
+                                "Email": "tkim@gmail.com",<br /> 
+                                "Password": "tkim123",<br /> 
+                                "Birthday": "1985-02-19T00:00:00.000Z"<br /> 
+                                }, 
                             </code>
                         </td>
                     </tr>
                     <tr>
-                        <td>Update user's info (name) by uuid</td>
-                        <td>/users/:id</td>
+                        <td>Update user's info, by username</td>
+                        <td>/users/:Username</td>
                         <td>PUT</td>
                         <td>A JSON object holding data from the user to be updated:<br /> 
                             <code>
                                 {<br /> 
-                                    id: 4,<br />
-                                    user': "Mary", <br />
-                                    email: 'marynolan@gmail.com',<br />
-                                    password': '$filmGeek',<br />
-                                    dob: 'January 13, 1992',<br />
-                                    favMovies: [Whiplash],<br /> 
-                                }     
+                                "_id": "66392bb9dabb4f9c263d0fde",<br /> 
+                                "Username": "Tuv",<br /> 
+                                "Email": "tkim@gmail.com",<br /> 
+                                "Password": "tkim123",<br /> 
+                                "Birthday": "1985-02-19T00:00:00.000Z"<br />
+                                "FavoriteMovies": [
+                                    "663a9afcbccd710c53c89421"
+                                ], 
+                                }, 
                             </code>
                         </td>
                         <td>A JSON object holding data from the user that has been updated:<br /> 
@@ -209,18 +385,18 @@
                     </tr>
                     <tr>
                         <td>Add movies to user's favorite list</td>
-                        <td>/users/:id/:title</td>
+                        <td>/users/:Username/movies/:MovieID</td>
                         <td>POST</td>
-                        <td>None</td>
-                        <td>A message returning if a movie has been successfully added to the list.
+                        <td>N/A</td>
+                        <td>A message returning if a movie has been successfully added to the list or not.
                         </td>
                     </tr>
                     <tr>
                         <td>Delete a user's favMovie</td>
                         <td>/users/:id/:title</td>
                         <td>DELETE</td>
-                        <td>None</td>
-                        <td>A message returning if a movie has been successfully removed from the list.
+                        <td>N/A</td>
+                        <td>A message returning if a movie has been successfully removed from the list or not.
 
                         </td>
                         </tr>
@@ -228,15 +404,13 @@
                         <td>Delete a user</td>
                         <td>/users/:id/</td>
                         <td>DELETE</td>
-                        <td>None</td>
-                        <td>A message returning if the user was successfully deleted.</td>
+                        <td>N/A</td>
+                        <td>A message returning if the user was successfully deleted or not.</td>
                     </tr>
                 </tbody>
             </table>
     </div>
 </body>
 </html>
-
-
 
 

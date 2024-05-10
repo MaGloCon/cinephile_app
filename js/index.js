@@ -1,9 +1,8 @@
 //Import third-party modules
 const express = require('express'),
-      morgan = require('morgan'),
-      bodyParser = require('body-parser'),
-      mongoose = require("mongoose"),
-      uuid = require('uuid');
+  morgan = require('morgan'),
+  bodyParser = require('body-parser'),
+  mongoose = require("mongoose");
 
 // Import local modules
 const Models = require("./models.js");
@@ -11,8 +10,6 @@ const Models = require("./models.js");
 // Retrieve individual models from the Models object
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Director = Models.Director;
 
 // Initialize Express application
 const app = express();
@@ -20,6 +17,10 @@ const app = express();
 // Apply middleware
 app.use(morgan('common'));
 app.use(bodyParser.json());
+
+const auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js');
 
 //Connect to local MongoDB database and log connection status
 mongoose.connect('mongodb://localhost:27017/cfDB');
@@ -29,186 +30,147 @@ db.once('open', function() {
   console.log("Connected to cfDB database");
 });
 
-// Serve documentation.html (static)
 app.use('/documentation', express.static('public', {index: 'documentation.html'}));
 
-// Get homepage
 app.get('/', (req, res) => {
     res.send('Welcome to Cinephile!');
 })
 
-// Get all movies
-app.get('/movies', async (req, res) => {
+// Retrieving all movies
+app.get('/movies',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
-    const movies = await Movies.find();
+    const query = {};
+    const searchableFields = ['Title', 'Year', 'Countries', 'Languages', 'Genre.Name', 'Director.Name']
+    for (const key in req.query) {
+      if (searchableFields.includes(key)) {
+        query[key] = req.query[key];
+      }
+    }
+    const movies = await Movies.find(query);
     if (!movies || movies.length === 0) {
-      return res.status(404).send('No movies found');
+      return res.status(404).send({ message: 'No movies found.' });
     }
     res.status(200).json(movies);
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred while trying to retrieve the movies');
+    res.status(500).send({ message: 'Error retrieving movies' });
   }
 });
 
-// Get a single movie by title
-app.get('/movies/:title', async (req, res) => {
+// Retrieving all details of a specific movie
+app.get('/movies/:title',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movies.findOne({Title: title});
+    const movie = await Movies.findOne({ Title: title });
     if (!movie) {
-      return res.status(400).send('no such movie');
+      return res.status(400).send({ message: `We couldn\'t find ${title}.` });
     }
     res.status(200).json(movie);
   } catch (err) {
     console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the movie');
+    res.status(500).send({ message: `Error retrieving movie: ${title}` });
   }
 });
 
-//Get all movies of a specific genre -- res: array of movies
-app.get('/movies/genre/:Name/movies', async (req, res) => {
-  const { Name } = req.params;
-  try {
-    const movies = await Movies.find({ 'Genre.Name': Name });
-    if (!movies || movies.length === 0) {
-      return res.status(400).send('No movies found in this genre');
+// Retrieving details of a specific genre
+app.get('/movies/genre/:name',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const  { name } = req.params;
+    try {
+      const movie = await Movies.findOne({ 'Genre.Name': name }, { 'Genre.$': 1 });
+      if (!movie || !movie.Genre || movie.Genre.length === 0) {
+        return res.status(400).send({ message: `This ${genre} cannot be found.` });
+      }
+      res.status(200).json(movie.Genre[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message:`Error retrieving genre: ${genre}` });
+  }
+});
+
+// Retrieving all genres of a specific movie
+app.get('/movies/:title/genre', 
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { title } = req.params;
+    try {
+      const movie = await Movies.findOne({ Title: title });
+      if (!movie || !movie.Genre || movie.Genre.length === 0) {
+        return res.status(400).send({ message: `This ${title} could not be found or it does not have a genre` });
+      }
+      res.status(200).json(movie.Genre);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message:`Error retrieving genre(s) for movie: ${title}` });
     }
-    res.status(200).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the movies');
-  }
 });
 
-// Get details (name & description) of a specific Genre by Genre Name -- res: genre object
-app.get('/movies/genre/:name', async (req, res) => {
-  const  { name } = req.params;
-  try {
-    const movie = await Movies.findOne({ 'Genre.Name': name }, {'Genre.$': 1});
-    if (!movie || !movie.Genre || movie.Genre.length === 0) {
-      return res.status(400).send('no such genre');
-    }
-    res.status(200).json(movie.Genre[0]); 
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the genre');
-  }
-});
-
-// Get all genres of a specific movie by title
-app.get('/movies/:title/genre', async (req, res) => {
-  const { title } = req.params;
-  try {
-    const movie = await Movies.findOne({Title: title});
-    if (!movie || !movie.Genre || movie.Genre.length === 0) {
-      return res.status(400).send('No such movie or the movie does not have a genre');
-    }
-    res.status(200).json(movie.Genre);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the genres');
-  }
-});
-
-// Get all movies directed by a specific director -- res: array of movies
-app.get('/movies/director/:name/movies', async (req, res) => {
-  const { name } = req.params;
-  try {
-    const movies = await Movies.find({ 'Director.Name': name });
-    if (!movies || movies.length === 0) {
-      return res.status(400).send('No movies found from this director');
-    }
-    res.status(200).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the movies');
-  }
-});
-
-// Get details (name & description) of a specific director by Name -- res: director object
-app.get('/movies/director/:name', async (req, res) => {
+// Retrieving details of a specific director
+app.get('/movies/director/:name', 
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   const  { name } = req.params;
   try {
     const movie = await Movies.findOne({ 'Director.Name': name });
     if (!movie || !movie.Director) {
-      return res.status(400).send('no such director');
+      return res.status(400).send({ message: `${name} could not be found.` });
     }
     res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the director');
+    res.status(500).send({ message: `Error retrieving director: ${name}` });
   }
 });
 
-// Get director by movie title -- res: array of director objects
-app.get('/movies/:title/director', async (req, res) => {
+// Retrieving director(s) of a specific movie
+app.get('/movies/:title/director',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movies.findOne({Title: title});
+    const movie = await Movies.findOne({ Title: title });
     if (!movie || !movie.Director || movie.Director.length === 0) {
       return res.status(400).send('No such movie or the movie does not have a director');
     }
     res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the director(s)');
+    res.status(500).send(`Error retrieving director(s) for movie: ${title}`);
   }
 });
 
-// Get movies by language -- res: array of movies
-app.get('/movies/language/:language', async (req, res) => {
-  const { language } = req.params;
-  try {
-    const movies = await Movies.find({Languages: {$in: [language]}});
-    if (!movies || movies.length === 0) {
-      return res.status(400).send('No movies found in this language');
-    }
-    res.status(200).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the movies');
-  }
-});
-
-// Get movies by country -- res: array of movies
-app.get('/movies/country/:country', async (req, res) => {
-  const { country } = req.params;
-  try {
-    const movies = await Movies.find({Countries: {$in: [country]}});
-    if (!movies || movies.length === 0) {
-      return res.status(400).send('No movies found from this country');
-    }
-    res.status(200).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('An error occurred while trying to retrieve the movies');
-  }
-});
-
-//Get all users
-app.get('/users', async (req, res) => {
+// Retrieving all users
+app.get('/users',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const users = await Users.find();
     res.status(201).json(users);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-// Get a user by username
-app.get('/users/:Username', async (req, res) => {
+// Retrieving a single user
+app.get('/users/:Username',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const user = await Users.findOne({ Username: req.params.Username });
     res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-//Add a new user
+//User registration requests -- adding a new user
 app.post('/users', async (req, res) => {
   try {
     const user = await Users.findOne({ Username: req.body.Username });
@@ -225,12 +187,17 @@ app.post('/users', async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error: ' + error);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-// Update a user's info, by username
-app.put('/users/:Username', async (req, res) => {
+// User profile/account update requests
+app.put('/users/:Username',
+// passport.authenticate('jwt', { session: false }),
+async (req, res) => {
+  // if(req.user.Username !== req.params.Username) {
+  //   return res.status(400).send('Permission denied');
+  // }
   try {
     const updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username }, 
       { $set:
@@ -244,12 +211,14 @@ app.put('/users/:Username', async (req, res) => {
     res.json(updatedUser);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
   
-// Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+// User favorite movies add requests
+app.post('/users/:Username/movies/:MovieID',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username }, 
       {
@@ -259,12 +228,14 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
     res.json(updatedUser);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-// Update a movie in a user's list of favorites
-app.put('/users/:Username/movies/:OldMovieID/:NewMovieID', async (req, res) => {
+// User favorite movies update requests
+app.put('/users/:Username/movies/:OldMovieID/:NewMovieID',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const updatedUser = await Users.findOneAndUpdate(
       { Username: req.params.Username, FavoriteMovies: req.params.OldMovieID },
@@ -278,12 +249,14 @@ app.put('/users/:Username/movies/:OldMovieID/:NewMovieID', async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-// Remove a movie from a user's list of favorites
-app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+// User favorite movies delete requests
+app.delete('/users/:Username/movies/:MovieID',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const updatedUser = await Users.findOneAndUpdate(
       { Username: req.params.Username },
@@ -297,12 +270,14 @@ app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
-// Remove a user by Username
-app.delete('/users/:Username', async (req, res) => {
+// User account delete requests
+app.delete('/users/:Username',
+passport.authenticate('jwt', { session: false }),
+async (req, res) => {
   try {
     const user = await Users.findOneAndDelete({ Username: req.params.Username });
     if (!user) {
@@ -312,17 +287,18 @@ app.delete('/users/:Username', async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).send({ message: `Error: ${err}` });
   }
 });
 
 // Global Error-handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('An error occurred!');
+    res.status(500).send({ message: 'An error occurred!', error: err.stack });
 });
 
-// Start server and Listen for requests
+// Server listening
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
 });
+
