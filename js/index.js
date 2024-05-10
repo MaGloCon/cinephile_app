@@ -67,7 +67,7 @@ async (req, res) => {
   try {
     const movie = await Movies.findOne({ Title: title });
     if (!movie) {
-      return res.status(400).send({ message: `We couldn\'t find ${title}.` });
+      return res.status(400).send({ message: `The movie "${title}" couldn't be found.` });
     }
     res.status(200).json(movie);
   } catch (err) {
@@ -84,7 +84,7 @@ app.get('/movies/genre/:name',
     try {
       const movie = await Movies.findOne({ 'Genre.Name': name }, { 'Genre.$': 1 });
       if (!movie || !movie.Genre || movie.Genre.length === 0) {
-        return res.status(400).send({ message: `This ${genre} cannot be found.` });
+        return res.status(400).send({ message: `The "${genre}" genre couldn't be found` });
       }
       res.status(200).json(movie.Genre[0]);
     } catch (err) {
@@ -101,7 +101,7 @@ app.get('/movies/:title/genre',
     try {
       const movie = await Movies.findOne({ Title: title });
       if (!movie || !movie.Genre || movie.Genre.length === 0) {
-        return res.status(400).send({ message: `This ${title} could not be found or it does not have a genre` });
+        return res.status(400).send({ message: `The movie "${title}" could not be found or it does not have a genre` });
       }
       res.status(200).json(movie.Genre);
     } catch (err) {
@@ -135,7 +135,7 @@ async (req, res) => {
   try {
     const movie = await Movies.findOne({ Title: title });
     if (!movie || !movie.Director || movie.Director.length === 0) {
-      return res.status(400).send('No such movie or the movie does not have a director');
+      return res.status(400).send({ message: `The movie "${title}" could not be found or it does not have a director`});
     }
     res.status(200).json(movie.Director);
   } catch (err) {
@@ -175,7 +175,7 @@ app.post('/users', async (req, res) => {
   try {
     const user = await Users.findOne({ Username: req.body.Username });
     if (user) {
-      return res.status(400).send(req.body.Username + ' already exists');
+      return res.status(400).send({ message: `${req.body.Username} already exists` });
     } else {
       const newUser = await Users.create({
         Username: req.body.Username,
@@ -193,11 +193,11 @@ app.post('/users', async (req, res) => {
 
 // User profile/account update requests
 app.put('/users/:Username',
-// passport.authenticate('jwt', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
-  // if(req.user.Username !== req.params.Username) {
-  //   return res.status(400).send('Permission denied');
-  // }
+  if(req.user.Username !== req.params.Username) {
+    return res.status(400).send('Permission denied');
+  }
   try {
     const updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username }, 
       { $set:
@@ -243,9 +243,9 @@ async (req, res) => {
       { new: true }
     );
     if (!updatedUser) {
-      res.status(400).send('Movie ' + req.params.OldMovieID + ' was not found in the favorite list of ' + req.params.Username);
+      res.status(400).send({ message: `Movie ${req.params.OldMovieID} was not found in the favorite list of ${req.params.Username}` });
     } else {
-      res.status(200).send('Movie ' + req.params.OldMovieID + ' was updated to ' + req.params.NewMovieID + ' in the favorite list of ' + req.params.Username);
+      res.status(200).send({ message: `Movie ${req.params.OldMovieID} was updated to ${req.params.NewMovieID} in the favorite list of ${req.params.Username}`});
     }
   } catch (err) {
     console.error(err);
