@@ -232,7 +232,7 @@ async (req, res) => {
   }
 });
 
-// User favorite movies update requests
+// User favorite movies update requests --  replacing a movie with another
 app.put('/users/:Username/movies/:OldMovieID/:NewMovieID',
 passport.authenticate('jwt', { session: false }),
 async (req, res) => {

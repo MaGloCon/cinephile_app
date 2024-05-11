@@ -38,7 +38,7 @@ passport.use(
 //Use JWTStrategy for JWT-based authentication 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //bearer token is a type of access token
-  secretOrKey: 'your_jwt_secret'
+  secretOrKey: 'CinephileSecret'
 }, async (jwtPayload, callback) => {
   try {
     const user = await Users.findById(jwtPayload._id);
