@@ -16,6 +16,7 @@ const port = 8080;
 
 // Apply middleware
 app.use(morgan('common'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CORS middleware
