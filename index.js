@@ -6,7 +6,7 @@ const express = require('express'),
   {check, validationResult} = require('express-validator');
 
 // Import local modules
-const models = require("./models.js");
+const models = require("./models/models.js");
 const Movies = models.Movie;
 const Users = models.User;
 
@@ -34,9 +34,9 @@ app.use(cors({
 }));
 
 // JWT authentication
-const auth = require('./auth.js')(app); 
+const auth = require('./config/auth.js')(app); 
 const passport = require('passport');
-require('./passport.js');
+require('./config/passport.js');
 
 //Connect to MongoDB database and log connection status
 mongoose.connect('mongodb://localhost:27017/cfDB'); //Mongoose 8.3.4: useNewUrlParser, useUnifiedTopology are no longer supported
