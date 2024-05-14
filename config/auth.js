@@ -1,7 +1,6 @@
 const jwtSecret = 'CinephileSecret';
-
-const jwt = require('jsonwebtoken'),
-  passport = require('passport');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
 require('./passport');
 

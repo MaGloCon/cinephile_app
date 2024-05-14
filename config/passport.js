@@ -8,6 +8,7 @@ const Users = Models.User,
   JWTStrategy = passportJWT.Strategy, 
   ExtractJWT = passportJWT.ExtractJwt; 
 
+
 //Define basic HTTP authentication for login requests
 passport.use( 
   new LocalStrategy( 
