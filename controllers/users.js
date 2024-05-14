@@ -1,7 +1,7 @@
 
 const { check, validationResult } = require('express-validator');
 
-const { Movies, Users } = require('../models/models');
+const { Movie, User } = require('../models/models');
 
 module.exports = {};
 
@@ -19,13 +19,13 @@ module.exports.create = [
         return res.status(422).json({ errors: errors.array() });
       }
 
-      const hashedPassword = Users.hashPassword(req.body.Password); 
-      const existingUser = await Users.findOne({ Username: req.body.Username }); //Check if a user already exists with the requested username
+      const hashedPassword = User.hashPassword(req.body.Password); 
+      const existingUser = await User.findOne({ Username: req.body.Username }); //Check if a user already exists with the requested username
 
       if (existingUser) {
         return res.status(400).send(`${req.body.Username} already exists`);
       } else { //If the user does not exist, create a new user
-        const user = await Users.create({
+        const user = await User.create({
           Username: req.body.Username,
           Password: hashedPassword,
           Email: req.body.Email,
@@ -43,7 +43,7 @@ module.exports.create = [
 
 module.exports.readAll = async (req, res) => {
   try {
-    const users = await Users.find();
+    const users = await User.find();
     res.status(201).json(users);
   } catch (err) {
     console.error(err);
@@ -53,7 +53,7 @@ module.exports.readAll = async (req, res) => {
 
 module.exports.readById = async (req, res) => {
   try {
-    const user = await Users.findById(req.params.id);
+    const user = await User.findById(req.params.id);
     res.json(user);
   } catch (err) {
     console.error(err);
@@ -63,7 +63,10 @@ module.exports.readById = async (req, res) => {
 
 module.exports.readByUsername = async (req, res) => {
   try {
-    const user = await Users.findOne(req.params.Username);
+    const user = await User.findOne({ Username: req.params.username });
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
     res.json(user);
   } catch (err) {
     console.error(err);
@@ -73,14 +76,14 @@ module.exports.readByUsername = async (req, res) => {
 
 module.exports.me = async (req, res) => {
   try {
-    const user = await Users.findOne({ Username: req.user.Username });
+    const user = await User.findOne({ Username: req.user.Username });
     res.json(user);
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: `Error: ${err}` });
   }
+};
 
-}
 // User account update requests
 module.exports.update = [
   check('Username').isEmail(),
@@ -96,8 +99,8 @@ module.exports.update = [
       return res.status(400).send('Permission denied'); //use 403 for forbidden?
     }
     try {
-      const hashedPassword = Users.hashPassword(req.body.Password);
-      const updatedUser = await Users.findOneAndUpdate({ Username: req.params.Username }, 
+      const hashedPassword = User.hashPassword(req.body.Password);
+      const updatedUser = await User.findOneAndUpdate({ Username: req.params.Username }, 
         { $set:
           {
             Username: req.body.Username,
@@ -121,7 +124,7 @@ module.exports.addFavoriteMovie = async (req, res) => {
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
-    const updatedUser = await Users.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { Username: req.params.Username },
       { $push: { FavoriteMovies: movie._id } },
       { new: true }
@@ -142,7 +145,7 @@ module.exports.deleteFavoriteMovie = async (req, res) => {
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
-    const updatedUser = await Users.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { Username: req.params.Username },
       { $pull: { FavoriteMovies: movie._id } },
       { new: true }
@@ -160,7 +163,7 @@ module.exports.deleteFavoriteMovie = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    const user = await Users.findOneAndDelete({ Username: req.params.Username }); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
+    const user = await User.findOneAndDelete({ Username: req.params.Username }); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
     if (!user) {
       res.status(400).send({ message: `${req.params.Username} was not found` });
     } else {

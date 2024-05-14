@@ -4,6 +4,7 @@ const port = process.env.PORT || 8080;
 const mongoose = require("mongoose");
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const session = require('express-session');
  
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
@@ -39,27 +40,25 @@ const auth = require('./config/auth.js')(app);
 app.get('/', (req, res) => { res.status(200).send('Welcome to Cinephile!');});
 
 app.use('/documentation', express.static('public', {index: 'documentation.html'})); 
-
 app.get('/movies', movies.readAll);
 app.get('/movies/search', movies.search);
+app.get('/movies/featured', movies.readFeatured);
 app.get('/movies/:title', movies.read);
 app.get('/movies/genre/:name', movies.readGenre);
 app.get('/movies/:title/genre', movies.readGenreByTitle);
 app.get('/movies/director/:name', movies.readDirector);
 app.get('/movies/:title/director', movies.readDirectorByTitle);
-app.get('/movies/featured', movies.readFeatured);
 
-
-app.post('/users/signup', users.create); 
+app.post('/users/signup', users.create);
 app.get('/users', users.readAll);
 app.get('/user/search/id/:id', users.readById);
 app.get('/user/search/username/:username', users.readByUsername);
-app.get('/user/profile', isLoggedIn, users.me); 
-app.post('user/profile/update', isLoggedIn, users.update);
+app.get('/users/profile/me', isLoggedIn, users.me); 
+app.post('/users/profile/update', isLoggedIn, users.update); 
 app.post('/users/:Username/movies/:title', isLoggedIn, users.addFavoriteMovie);
 app.delete('/users/:Username/movies/:title', isLoggedIn, users.deleteFavoriteMovie);
-app.delete('/user/delete', isLoggedIn, users.delete);
-app.post('/logout', function(req, res) { //make an arrow function?
+app.delete('/users/profile/delete', isLoggedIn, users.delete); 
+app.post('/logout', function(req, res) { 
   req.logout();
   res.status(200).send('Logged out')
 });

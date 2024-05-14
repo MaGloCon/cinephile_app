@@ -1,10 +1,10 @@
-const Movies = require('../models/models.js');
-
+const { Movie } = require('../models/models.js');
+const mongoose = require('mongoose');
 module.exports = {};
 
 module.exports.readAll = async (req, res) => {
   try {
-    const movies = await Movies.find();
+    const movies = await Movie.find();
     if (!movies || movies.length === 0) {
       return res.status(404).send({ message: 'No movies found' });
     }
@@ -28,14 +28,15 @@ module.exports.search = async (req, res) => {
     }
 
     if (req.query.decade) {
-      const startYear = parseInt(req.query.decade);
-      const endYear = startYear + 9;
-      query.year = {
-        $gte: startYear.toString(),
-        $lte: endYear.toString()
+      const startYear = req.query.decade.substring(0, 4); // allows searchs with/without 's' at the end (ex. 1990 or 1990s)
+      const endYear = (parseInt(startYear) + 9).toString();
+      query.Year = {
+        $gte: startYear,
+        $lte: endYear
       };
     }
-    const movies = await Movies.find(query).sort(req.query);
+
+    const movies = await Movie.find(query);
     if (!movies || movies.length === 0) {
       return res.status(404).send({ message: 'An error occurred while retrieving movies' });
     }
@@ -43,23 +44,18 @@ module.exports.search = async (req, res) => {
     res.status(200).json(movies); 
   } catch (error) {
     console.error(error);
-    if (error instanceof mongoose.Error) {
-      res.status(500).send({ message: 'An error occurred while searching the database' });
-
-    } else {
-      res.status(500).send({ message: 'An unknown error occurred' });
-    }
+    res.status(500).send({ message: 'An error occurred while processing your request' });
   }
 };
 
 module.exports.read = async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movies.findOne({ Title: title });
-    if (!movie) {
+    const movies = await Movie.findOne({ Title: title });
+    if (!movies) {
       return res.status(404).send({ message: `The movie "${title}" couldn't be found.` });
     }
-    res.status(200).json(movie);
+    res.status(200).json(movies);
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: `Error retrieving movie: ${title}` });
@@ -69,7 +65,7 @@ module.exports.read = async (req, res) => {
 module.exports.readGenre = async (req, res) => {
   const { name } = req.params;
   try {
-    const movie = await Movies.findOne({ 'Genre.Name': name }, { 'Genre.$': 1 });
+    const movie = await Movie.findOne({ 'Genre.Name': name }, { 'Genre.$': 1 });
     if (!movie || !movie.Genre || movie.Genre.length === 0) {
       return res.status(404).send({ message: `The genre could not be found` });
     }
@@ -83,7 +79,7 @@ module.exports.readGenre = async (req, res) => {
 module.exports.readGenreByTitle = async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movies.findOne({ Title: title });
+    const movie = await Movie.findOne({ Title: title });
 
     if (!movie || !movie.Genre || movie.Genre.length === 0) {
       return res.status(404).send({ message: `The movie could not be found or it does not have a genre` });
@@ -97,23 +93,23 @@ module.exports.readGenreByTitle = async (req, res) => {
 };
 
 module.exports.readDirector = async (req, res) => {
-  const  { directorName } = req.params;
+  const  { name } = req.params;
   try {
-    const movie = await Movies.findOne({ 'Director.Name': directorName });
+    const movie = await Movie.findOne({ 'Director.Name': name });
     if (!movie || !movie.Director) {
       return res.status(404).send({ message: `The director could not be found.` });
     }
     res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: `Error retrieving director: ${directorName}` });
+    res.status(500).send({ message: `Error retrieving director: ${name}` });
   }
 };
 
 module.exports.readDirectorByTitle = async (req, res) => {
   const { title } = req.params;
   try {
-    const movie = await Movies.findOne({ Title: title });
+    const movie = await Movie.findOne({ Title: title });
     if (!movie || !movie.Director || movie.Director.length === 0) {
       return res.status(404).send({ message: `The movie could not be found or it does not have a director`});
     }
@@ -126,13 +122,14 @@ module.exports.readDirectorByTitle = async (req, res) => {
 
 module.exports.readFeatured = async (req, res) => {
   try {
-    const movies = await Movies.find({ Featured: true });
+    const movies = await Movie.find({ Featured: true });
     if (!movies || movies.length === 0) {
       return res.status(404).send({ message: 'No featured movies found' });
     }
+
     res.status(200).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ message: 'Error retrieving featured movies' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'An error occurred while retrieving featured movies' });
   }
-}
+};
