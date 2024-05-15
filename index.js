@@ -9,7 +9,8 @@ const { check } = require('express-validator');
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
 
-mongoose.connect('mongodb://localhost:27017/cfDB'); //Mongoose 8.3.4: useNewUrlParser, useUnifiedTopology are no longer supported
+// mongoose.connect('mongodb://localhost:27017/cfDB');
+mongoose.connect(process.env.CONNECTION_URI); //Mongoose 8.3.4: useNewUrlParser, useUnifiedTopology are no longer supported
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
