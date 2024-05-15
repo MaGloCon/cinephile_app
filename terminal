@@ -1,0 +1,101 @@
+josephmichaelcontrada@MacBook-Pro-2 cinephile_app % heroku logs --tail
+2024-05-15T21:21:13.033489+00:00 app[web.1]: at Module.require (node:internal/modules/cjs/loader:1233:19)
+2024-05-15T21:21:13.033489+00:00 app[web.1]: at require (node:internal/modules/helpers:179:18)
+2024-05-15T21:21:13.033490+00:00 app[web.1]: at Object.<anonymous> (/app/index.js:5:16)
+2024-05-15T21:21:13.033490+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1358:14)
+2024-05-15T21:21:13.033490+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+2024-05-15T21:21:13.033490+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1208:32)
+2024-05-15T21:21:13.033491+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1024:12)
+2024-05-15T21:21:13.033492+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12) {
+2024-05-15T21:21:13.033496+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2024-05-15T21:21:13.033497+00:00 app[web.1]: requireStack: [ '/app/index.js' ]
+2024-05-15T21:21:13.033497+00:00 app[web.1]: }
+2024-05-15T21:21:13.033539+00:00 app[web.1]: 
+2024-05-15T21:21:13.033544+00:00 app[web.1]: Node.js v20.13.1
+2024-05-15T21:21:13.042798+00:00 app[web.1]: npm notice
+2024-05-15T21:21:13.043021+00:00 app[web.1]: npm notice New minor version of npm available! 10.5.2 -> 10.7.0
+2024-05-15T21:21:13.043213+00:00 app[web.1]: npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.7.0>
+2024-05-15T21:21:13.043421+00:00 app[web.1]: npm notice Run `npm install -g npm@10.7.0` to update!
+2024-05-15T21:21:13.043509+00:00 app[web.1]: npm notice
+2024-05-15T21:21:13.151420+00:00 heroku[web.1]: Process exited with status 1
+2024-05-15T21:21:13.188468+00:00 heroku[web.1]: State changed from starting to crashed
+2024-05-15T21:21:13.192102+00:00 heroku[web.1]: State changed from crashed to starting
+2024-05-15T21:21:17.105475+00:00 heroku[web.1]: Starting process with command `npm start`
+2024-05-15T21:21:18.379456+00:00 app[web.1]: 
+2024-05-15T21:21:18.379554+00:00 app[web.1]: > cinephile_app@1.0.0 start
+2024-05-15T21:21:18.379558+00:00 app[web.1]: > node index.js
+2024-05-15T21:21:18.379558+00:00 app[web.1]: 
+2024-05-15T21:21:18.653687+00:00 app[web.1]: node:internal/modules/cjs/loader:1148
+2024-05-15T21:21:18.653700+00:00 app[web.1]: throw err;
+2024-05-15T21:21:18.653700+00:00 app[web.1]: ^
+2024-05-15T21:21:18.653701+00:00 app[web.1]: 
+2024-05-15T21:21:18.653701+00:00 app[web.1]: Error: Cannot find module 'morgan'
+2024-05-15T21:21:18.653701+00:00 app[web.1]: Require stack:
+2024-05-15T21:21:18.653701+00:00 app[web.1]: - /app/index.js
+2024-05-15T21:21:18.653702+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+2024-05-15T21:21:18.653702+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:986:27)
+2024-05-15T21:21:18.653703+00:00 app[web.1]: at Module.require (node:internal/modules/cjs/loader:1233:19)
+2024-05-15T21:21:18.653703+00:00 app[web.1]: at require (node:internal/modules/helpers:179:18)
+2024-05-15T21:21:18.653703+00:00 app[web.1]: at Object.<anonymous> (/app/index.js:5:16)
+2024-05-15T21:21:18.653703+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1358:14)
+2024-05-15T21:21:18.653703+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+2024-05-15T21:21:18.653704+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1208:32)
+2024-05-15T21:21:18.653704+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1024:12)
+2024-05-15T21:21:18.653704+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12) {
+2024-05-15T21:21:18.653706+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2024-05-15T21:21:18.653706+00:00 app[web.1]: requireStack: [ '/app/index.js' ]
+2024-05-15T21:21:18.653706+00:00 app[web.1]: }
+2024-05-15T21:21:18.653710+00:00 app[web.1]: 
+2024-05-15T21:21:18.653711+00:00 app[web.1]: Node.js v20.13.1
+2024-05-15T21:21:18.661328+00:00 app[web.1]: npm notice
+2024-05-15T21:21:18.661459+00:00 app[web.1]: npm notice New minor version of npm available! 10.5.2 -> 10.7.0
+2024-05-15T21:21:18.661556+00:00 app[web.1]: npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.7.0>
+2024-05-15T21:21:18.661670+00:00 app[web.1]: npm notice Run `npm install -g npm@10.7.0` to update!
+2024-05-15T21:21:18.661705+00:00 app[web.1]: npm notice
+2024-05-15T21:21:18.731413+00:00 heroku[web.1]: Process exited with status 1
+2024-05-15T21:21:18.761645+00:00 heroku[web.1]: State changed from starting to crashed
+2024-05-15T21:24:50.000000+00:00 app[api]: Build started by user mgcontrada@gmail.com
+2024-05-15T21:25:08.000000+00:00 app[api]: Build succeeded
+2024-05-15T21:25:08.095901+00:00 app[api]: Deploy ebed0dee by user mgcontrada@gmail.com
+2024-05-15T21:25:08.095901+00:00 app[api]: Release v5 created by user mgcontrada@gmail.com
+2024-05-15T21:25:08.488259+00:00 heroku[web.1]: State changed from crashed to starting
+2024-05-15T21:25:12.045539+00:00 heroku[web.1]: Starting process with command `npm start`
+2024-05-15T21:25:13.409762+00:00 app[web.1]: 
+2024-05-15T21:25:13.409855+00:00 app[web.1]: > cinephile_app@1.0.0 start
+2024-05-15T21:25:13.409855+00:00 app[web.1]: > node index.js
+2024-05-15T21:25:13.409856+00:00 app[web.1]: 
+2024-05-15T21:25:13.677291+00:00 app[web.1]: node:internal/modules/cjs/loader:1148
+2024-05-15T21:25:13.677309+00:00 app[web.1]: throw err;
+2024-05-15T21:25:13.677310+00:00 app[web.1]: ^
+2024-05-15T21:25:13.677310+00:00 app[web.1]: 
+2024-05-15T21:25:13.677310+00:00 app[web.1]: Error: Cannot find module 'morgan'
+2024-05-15T21:25:13.677310+00:00 app[web.1]: Require stack:
+2024-05-15T21:25:13.677311+00:00 app[web.1]: - /app/index.js
+2024-05-15T21:25:13.677311+00:00 app[web.1]: at Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+2024-05-15T21:25:13.677312+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:986:27)
+2024-05-15T21:25:13.677312+00:00 app[web.1]: at Module.require (node:internal/modules/cjs/loader:1233:19)
+2024-05-15T21:25:13.677312+00:00 app[web.1]: at require (node:internal/modules/helpers:179:18)
+2024-05-15T21:25:13.677313+00:00 app[web.1]: at Object.<anonymous> (/app/index.js:5:16)
+2024-05-15T21:25:13.677313+00:00 app[web.1]: at Module._compile (node:internal/modules/cjs/loader:1358:14)
+2024-05-15T21:25:13.677313+00:00 app[web.1]: at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+2024-05-15T21:25:13.677313+00:00 app[web.1]: at Module.load (node:internal/modules/cjs/loader:1208:32)
+2024-05-15T21:25:13.677313+00:00 app[web.1]: at Module._load (node:internal/modules/cjs/loader:1024:12)
+2024-05-15T21:25:13.677314+00:00 app[web.1]: at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12) {
+2024-05-15T21:25:13.677315+00:00 app[web.1]: code: 'MODULE_NOT_FOUND',
+2024-05-15T21:25:13.677316+00:00 app[web.1]: requireStack: [ '/app/index.js' ]
+2024-05-15T21:25:13.677316+00:00 app[web.1]: }
+2024-05-15T21:25:13.677316+00:00 app[web.1]: 
+2024-05-15T21:25:13.677317+00:00 app[web.1]: Node.js v20.13.1
+2024-05-15T21:25:13.688251+00:00 app[web.1]: npm notice
+2024-05-15T21:25:13.688382+00:00 app[web.1]: npm notice New minor version of npm available! 10.5.2 -> 10.7.0
+2024-05-15T21:25:13.688482+00:00 app[web.1]: npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.7.0>
+2024-05-15T21:25:13.688599+00:00 app[web.1]: npm notice Run `npm install -g npm@10.7.0` to update!
+2024-05-15T21:25:13.688633+00:00 app[web.1]: npm notice
+2024-05-15T21:25:13.755276+00:00 heroku[web.1]: Process exited with status 1
+2024-05-15T21:25:13.780416+00:00 heroku[web.1]: State changed from starting to crashed
+2024-05-15T21:25:36.814635+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=cinephile-dc1b75a885d0.herokuapp.com request_id=3b329655-792d-4e03-a190-ec6ced591c84 fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
+2024-05-15T21:25:38.065419+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=cinephile-dc1b75a885d0.herokuapp.com request_id=9efd6d29-5d9b-40f0-97c1-1c70d72a8124 fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
+2024-05-15T21:26:19.065753+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=cinephile-dc1b75a885d0.herokuapp.com request_id=a90e6c02-f7c5-4314-96ee-47d5b85fe7ec fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
+2024-05-15T21:26:19.711856+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=cinephile-dc1b75a885d0.herokuapp.com request_id=aab97c26-3b62-4891-903c-ced410db2f2f fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
+2024-05-15T21:29:22.744287+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=cinephile-dc1b75a885d0.herokuapp.com request_id=bcb27cff-629f-47bc-87f1-5d0115ead74e fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
+2024-05-15T21:29:23.328677+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=cinephile-dc1b75a885d0.herokuapp.com request_id=6b12bff1-d9ff-4fc7-99ea-f7df2acc7dc7 fwd="93.221.29.39" dyno= connect= service= status=503 bytes= protocol=https
