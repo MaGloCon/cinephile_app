@@ -4,8 +4,8 @@ const port = process.env.PORT || 8080;
 const mongoose = require("mongoose");
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const session = require('express-session');
- 
+const { check, validationResult } = require('express-validator');
+
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
 
@@ -41,30 +41,79 @@ app.use('/documentation', express.static('public', {index: 'documentation.html'}
 
 app.get('/', (req, res) => { res.status(200).send('Welcome to Cinephile!');});
 
-app.get('/movies', movies.readAll);
-app.get('/movies/search', movies.search);
-app.get('/movies/featured', movies.readFeatured);
-app.get('/movies/:title', movies.read);
-app.get('/movies/genre/:name', movies.readGenre);
-app.get('/movies/:title/genre', movies.readGenreByTitle);
-app.get('/movies/director/:name', movies.readDirector);
-app.get('/movies/:title/director', movies.readDirectorByTitle);
+const authenticate = (controller) => passport.authenticate('jwt', { session: false }, controller);
 
-const authenticate = passport.authenticate('jwt', { session: false });
+app.get('/movies', authenticate, movies.readAll);
+app.get('/movies/search', authenticate, movies.search);
+app.get('/movies/featured', authenticate, movies.readFeatured);
+app.get('/movies/:title', authenticate, movies.read);
+app.get('/movies/genre/:name', authenticate, movies.readGenre);
+app.get('/movies/:title/genre', authenticate, movies.readGenreByTitle);
+app.get('/movies/director/:name', authenticate, movies.readDirector);
+app.get('/movies/:title/director', authenticate, movies.readDirectorByTitle);
 
-app.post('/users/signup', users.create);
+//Users
+const validateSignup = [ 
+  check('Username')
+    .trim()
+    .notEmpty().withMessage('Username is required')
+    .isLength({min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long')
+    .isAlphanumeric().withMessage('Username contains non alphanumeric characters - not allowed'),
+  check('Password')
+    .trim()
+    .notEmpty().withMessage('Password is required')
+    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long') // Corrected here
+    .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+    .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+    .matches(/[0-9]/).withMessage('Password must contain at least one number')
+    .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
+  check('Email')
+    .trim()
+    .notEmpty().withMessage('Email is required')
+    .normalizeEmail()
+    .isEmail().withMessage('Email does not appear to be valid'),
+  check('Birthday')
+    .notEmpty()
+    .isDate().withMessage('Birthday must be a valid date')
+];
+
+const validateUpdate = [
+    check('Username')
+      .optional()
+      .trim()
+      .isLength({min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long')
+      .isAlphanumeric().withMessage('Username contains non alphanumeric characters - not allowed'),
+    check('Password')
+      .optional()
+      .trim()
+      .isLength({ min: 5 }).withMessage('Password must be at least 5 characters long')
+      .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+      .matches(/[0-9]/).withMessage('Password must contain at least one number')
+      .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
+    check('Email')
+      .optional()
+      .trim()
+      .normalizeEmail()
+      .isEmail().withMessage('Email does not appear to be valid'),
+    check('Birthday')
+      .optional()
+      .isDate().withMessage('Birthday must be a valid date')
+];
+
+app.post('/users/signup', validateSignup, users.create);
+app.get('/users/search/id/:id', authenticate, users.readById);
+app.get('/users/search/username/:username',authenticate, users.readByUsername);
+app.get('/users', authenticate, users.readAll);
+app.put('/users/profile/update/:username', validateUpdate, authenticate, users.update); 
+app.post('/users/:Username/movies/:title', authenticate, users.addFavoriteMovie);
+app.delete('/users/:Username/movies/:title', authenticate, users.deleteFavoriteMovie);
+app.get('/users/profile/me', authenticate, users.me); 
+app.delete('/users/profile/delete', authenticate, users.delete);
 app.post('/logout', (req, res) => { 
   req.logout();
   res.status(200).send('Logged out');
 });
-app.get('/users', users.readAll);
-app.get('/users/search/id/:id', users.readById);
-app.get('/users/search/username/:username', users.readByUsername);
-app.get('/users/profile/me', authenticate, users.me); 
-app.put('/users/profile/update/:username', authenticate, users.update); 
-app.delete('/users/profile/delete', authenticate, users.delete);
-app.post('/users/:Username/movies/:title', authenticate, users.addFavoriteMovie);
-app.delete('/users/:Username/movies/:title', authenticate, users.deleteFavoriteMovie);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -1,33 +1,11 @@
 
-const { check, validationResult } = require('express-validator');
+
 
 const { Movie, User } = require('../models/models');
 
 module.exports = {};
 
-module.exports.create = [
-  check('Username')
-    .trim()
-    .notEmpty().withMessage('Username is required')
-    .isLength({min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long')
-    .isAlphanumeric().withMessage('Username contains non alphanumeric characters - not allowed'),
-  check('Password')
-    .trim()
-    .notEmpty().withMessage('Password is required')
-    .isLength({ min: 8 }).withMessage('Password must be at least 5 characters long')
-    .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
-    .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
-    .matches(/[0-9]/).withMessage('Password must contain at least one number')
-    .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
-  check('Email')
-    .trim()
-    .notEmpty().withMessage('Email is required')
-    .normalizeEmail()
-    .isEmail().withMessage('Email does not appear to be valid'),
-  check('Birthday')
-    .notEmpty()
-    .isDate().withMessage('Birthday must be a valid date'),
-  async (req, res) => {
+module.exports.create = async (req, res) => {
     try {
       const errors = validationResult(req); 
       if (!errors.isEmpty()) {  
@@ -53,8 +31,7 @@ module.exports.create = [
       console.error(error);
       return res.status(500).send(`Error: ${error}`);
     }
-  }
-];
+  };
 
 module.exports.readAll = async (req, res) => {
   try {
@@ -100,28 +77,7 @@ module.exports.me = async (req, res) => {
 };
 
 // User account update requests
-module.exports.update = [
-  check('Username')
-    .optional()
-    .trim()
-    .isLength({min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long')
-    .isAlphanumeric().withMessage('Username contains non alphanumeric characters - not allowed'),
-  check('Password')
-    .optional()
-    .trim()
-    .isLength({ min: 5 }).withMessage('Password must be at least 5 characters long')
-    .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
-    .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
-    .matches(/[0-9]/).withMessage('Password must contain at least one number')
-    .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
-  check('Email')
-    .optional()
-    .trim()
-    .normalizeEmail()
-    .isEmail().withMessage('Email does not appear to be valid'),
-  check('Birthday')
-    .optional()
-    .isDate().withMessage('Birthday must be a valid date'),
+module.exports.update = 
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -146,8 +102,7 @@ module.exports.update = [
       console.error(err);
       res.status(500).send({ message: `Error: ${err}` });
     }
-  }
-];
+  };
 
 module.exports.delete = async (req, res) => {
   try {
