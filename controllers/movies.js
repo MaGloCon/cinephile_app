@@ -1,5 +1,5 @@
 const { Movie } = require('../models/models.js');
-const mongoose = require('mongoose');
+
 module.exports = {};
 
 module.exports.readAll = async (req, res) => {
@@ -133,3 +133,4 @@ module.exports.readFeatured = async (req, res) => {
     res.status(500).send({ message: 'An error occurred while retrieving featured movies' });
   }
 };
+

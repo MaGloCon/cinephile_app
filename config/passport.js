@@ -10,32 +10,38 @@ const Users = Models.User,
 
 
 //Define basic HTTP authentication for login requests
-passport.use( 
-  new LocalStrategy( 
+passport.use(
+  new LocalStrategy(
     {
       usernameField: 'Username',
-      passwordField: 'Password'
+      passwordField: 'Password',
     },
-    async (username, password, callback) => { 
-      console.log(`${username} ${password}`); 
-      try {
-        const user = await Users.findOne({ Username: username }); 
+    async (username, password, callback) => {
+      console.log(`${username} ${password}`);
+      await Users.findOne({ Username: username })
+      .then((user) => {
         if (!user) {
           console.log('incorrect username');
-          return callback(null, false, { //null is for an error, false is for no user
+          return callback(null, false, {
             message: 'Incorrect username or password.',
           });
         }
+        if (!user.validatePassword(password)) {
+          console.log('incorrect password');
+          return callback(null, false, { message: 'Incorrect password.' });
+        }
         console.log('finished');
-        return callback(null, user); //null is for an error, user is for a successful login
-      } catch (error) {
-        console.log(error);
-        return callback(error); 
-      }
+        return callback(null, user);
+      })
+      .catch((error) => {
+        if (error) {
+          console.log(error);
+          return callback(error);
+        }
+      })
     }
   )
 );
-
 //Use JWTStrategy for JWT-based authentication 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //bearer token is a type of access token

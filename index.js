@@ -4,7 +4,7 @@ const port = process.env.PORT || 8080;
 const mongoose = require("mongoose");
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
@@ -33,17 +33,18 @@ app.use(cors({
   }
 }));
 
+const auth = require('./config/auth.js')(app);
 const passport = require('passport');
 require('./config/passport.js');
-const auth = require('./config/auth.js')(app); 
+ 
 
 app.use('/documentation', express.static('public', {index: 'documentation.html'})); 
 
 app.get('/', (req, res) => { res.status(200).send('Welcome to Cinephile!');});
 
-const authenticate = (controller) => passport.authenticate('jwt', { session: false }, controller);
+const authenticate = passport.authenticate('jwt', { session: false });
 
-app.get('/movies', authenticate, movies.readAll);
+app.get('/movies',authenticate, movies.readAll);
 app.get('/movies/search', authenticate, movies.search);
 app.get('/movies/featured', authenticate, movies.readFeatured);
 app.get('/movies/:title', authenticate, movies.read);
@@ -105,9 +106,9 @@ app.post('/users/signup', validateSignup, users.create);
 app.get('/users/search/id/:id', authenticate, users.readById);
 app.get('/users/search/username/:username',authenticate, users.readByUsername);
 app.get('/users', authenticate, users.readAll);
-app.put('/users/profile/update/:username', validateUpdate, authenticate, users.update); 
-app.post('/users/:Username/movies/:title', authenticate, users.addFavoriteMovie);
-app.delete('/users/:Username/movies/:title', authenticate, users.deleteFavoriteMovie);
+app.put('/users/profile/update/:Username', validateUpdate, authenticate, users.update); 
+app.post('/users/:Username/favorite/:Title', authenticate, users.addFavoriteMovie);
+app.delete('/users/:Username/favorite/:Title', authenticate, users.removeFavoriteMovie);
 app.get('/users/profile/me', authenticate, users.me); 
 app.delete('/users/profile/delete', authenticate, users.delete);
 app.post('/logout', (req, res) => { 

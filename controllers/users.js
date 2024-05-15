@@ -1,7 +1,7 @@
 
-
-
 const { Movie, User } = require('../models/models');
+const { validationResult } = require('express-validator');
+
 
 module.exports = {};
 
@@ -121,7 +121,7 @@ module.exports.delete = async (req, res) => {
 
 module.exports.addFavoriteMovie = async (req, res) => {
   try {
-    const movie = await Movies.findOne({ Title: req.params.Title });
+    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.Title}$`, 'i') } });
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
@@ -140,9 +140,9 @@ module.exports.addFavoriteMovie = async (req, res) => {
   }
 };
 
-module.exports.deleteFavoriteMovie = async (req, res) => {
+module.exports.removeFavoriteMovie = async (req, res) => {
   try {
-    const movie = await Movies.findOne({ Title: req.params.Title });
+    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.Title}$`, 'i') } });
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
