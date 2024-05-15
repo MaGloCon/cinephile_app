@@ -39,9 +39,7 @@ const auth = require('./config/auth.js')(app);
 
 app.use('/documentation', express.static('public', {index: 'documentation.html'})); 
 
-
 app.get('/', (req, res) => { res.status(200).send('Welcome to Cinephile!');});
-
 
 app.get('/movies', movies.readAll);
 app.get('/movies/search', movies.search);
@@ -63,7 +61,7 @@ app.get('/users', users.readAll);
 app.get('/users/search/id/:id', users.readById);
 app.get('/users/search/username/:username', users.readByUsername);
 app.get('/users/profile/me', authenticate, users.me); 
-app.post('/users/profile/update', authenticate, users.update); 
+app.put('/users/profile/update/:username', authenticate, users.update); 
 app.delete('/users/profile/delete', authenticate, users.delete);
 app.post('/users/:Username/movies/:title', authenticate, users.addFavoriteMovie);
 app.delete('/users/:Username/movies/:title', authenticate, users.deleteFavoriteMovie);
