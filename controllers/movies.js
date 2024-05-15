@@ -53,12 +53,12 @@ module.exports.read = async (req, res) => {
   try {
     const movies = await Movie.findOne({ Title: title });
     if (!movies) {
-      return res.status(404).send({ message: `The movie "${title}" couldn't be found.` });
+      return res.status(404).send({ message: 'The movie couldn\'t be found.' });
     }
     res.status(200).json(movies);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: `Error retrieving movie: ${title}` });
+    res.status(500).send({ message: 'Error retrieving movie' });
   }
 };
 
@@ -67,12 +67,12 @@ module.exports.readGenre = async (req, res) => {
   try {
     const movie = await Movie.findOne({ 'Genre.Name': name }, { 'Genre.$': 1 });
     if (!movie || !movie.Genre || movie.Genre.length === 0) {
-      return res.status(404).send({ message: `The genre could not be found` });
+      return res.status(404).send({ message: 'The genre could not be found' });
     }
     res.status(200).json(movie.Genre[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message:`Error retrieving genre: ${genre}` });
+    res.status(500).send({ message:'Error retrieving genre' });
   }
 };
 
@@ -82,13 +82,13 @@ module.exports.readGenreByTitle = async (req, res) => {
     const movie = await Movie.findOne({ Title: title });
 
     if (!movie || !movie.Genre || movie.Genre.length === 0) {
-      return res.status(404).send({ message: `The movie could not be found or it does not have a genre` });
+      return res.status(404).send({ message: 'The movie could not be found or it does not have a genre' });
     }
 
     res.status(200).json(movie.Genre);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message:`Error retrieving genre(s) for movie: ${title}` });
+    res.status(500).send({ message:'Error retrieving genre(s) for movie' });
   };
 };
 
@@ -102,7 +102,7 @@ module.exports.readDirector = async (req, res) => {
     res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: `Error retrieving director: ${name}` });
+    res.status(500).send({ message: 'Error retrieving director' });
   }
 };
 
@@ -111,12 +111,12 @@ module.exports.readDirectorByTitle = async (req, res) => {
   try {
     const movie = await Movie.findOne({ Title: title });
     if (!movie || !movie.Director || movie.Director.length === 0) {
-      return res.status(404).send({ message: `The movie could not be found or it does not have a director`});
+      return res.status(404).send({ message: 'The movie could not be found or it does not have a director' });
     }
     res.status(200).json(movie.Director);
   } catch (err) {
     console.error(err);
-    res.status(500).send(`Error retrieving director(s) for: ${title}`);
+    res.status(500).send({ message: 'Error retrieving director(s) for movie'});
   }
 };
 
