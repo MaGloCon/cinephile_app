@@ -121,6 +121,6 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: 'An error occurred!' });
 });
 
-app.listen(port, () => {
-  console.log(`Your app is listening on port ${port}`);
+app.listen(port, '0.0.0.0',() => {
+ console.log(`Listening on Port ${port}`);
 });
