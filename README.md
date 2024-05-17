@@ -21,12 +21,23 @@ Cinephile API is a RESTful API designed for movie enthusiasts. It provides endpo
 - Express.js: for building the API
 - Mongoose: for MongoDB object modeling
 - body-parser: for parsing incoming request bodies
-- uuid: for generating unique identifiers
+- bcrypt: A library for hashing passwords.
+- body-parser: Node.js body parsing middleware.
+- cors: Middleware that can be used to enable CORS with various options.
+- express: Fast, unopinionated, minimalist web framework for Node.js
+- express-validator: An express.js middleware for validator.
+- jsonwebtoken: An implementation of JSON Web Tokens.
+- mongoose: MongoDB object modeling tool designed to work in an asynchronous environment.
+- morgan: HTTP request logger middleware for Node.js
+- passport: Express-compatible authentication middleware for Node.js.
+- passport-jwt: Passport strategy for authenticating with a JSON Web Token.
+- passport-local: Passport strategy for authenticating with a username and password.
 
 ### Optional:
 
-- morgan: for HTTP request logging
-- nodemon: for automatic reloading during development
+- - morgan: HTTP request logger middleware for Node.js
+- nodemon: A tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
 
 ## Installation
 
