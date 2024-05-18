@@ -9,8 +9,6 @@ const { check } = require('express-validator');
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
 
-require('dotenv').config();
-
 mongoose.connect(process.env.CONNECTION_URI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
