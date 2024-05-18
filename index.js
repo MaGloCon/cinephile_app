@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
-const allowedOrigins = ['*'];
+const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://cinephile-dc1b75a885d0.herokuapp.com/'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
