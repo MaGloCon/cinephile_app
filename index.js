@@ -11,7 +11,7 @@ const movies = require('./controllers/movies.js');
 
 require('dotenv').config();
 
-mongoose.connect(process.env.CONNECTION_URI); //Mongoose 8.3.4: useNewUrlParser, useUnifiedTopology are no longer supported
+mongoose.connect(process.env.CONNECTION_URI);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -55,7 +55,7 @@ app.get('/movies/:title/genre', authenticate, movies.readGenreByTitle);
 app.get('/movies/director/:name', authenticate, movies.readDirector);
 app.get('/movies/:title/director', authenticate, movies.readDirectorByTitle);
 
-//Users
+
 const validateSignup = [ 
   check('Username')
     .trim()
@@ -65,11 +65,12 @@ const validateSignup = [
   check('Password')
     .trim()
     .notEmpty().withMessage('Password is required')
-    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long') // Corrected here
+    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long') 
     .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
     .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
     .matches(/[0-9]/).withMessage('Password must contain at least one number')
-    .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
+    .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character')
+    .not().matches(/\s/).withMessage('Password must not contain any spaces'),
   check('Email')
     .trim()
     .notEmpty().withMessage('Email is required')
@@ -93,7 +94,8 @@ const validateUpdate = [
       .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
       .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
       .matches(/[0-9]/).withMessage('Password must contain at least one number')
-      .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character'),
+      .matches(/[^A-Za-z0-9]/).withMessage('Password must contain at least one special character')
+      .not().matches(/\s/).withMessage('Password must not contain any spaces'),
     check('Email')
       .optional()
       .trim()
