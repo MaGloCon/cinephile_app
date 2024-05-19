@@ -44,14 +44,14 @@ app.get('/', (req, res) => { res.status(200).send('Welcome to Cinephile!');});
 
 const authenticate = passport.authenticate('jwt', { session: false });
 
-app.get('/movies', movies.readAll);
-app.get('/movies/search', movies.search);
-app.get('/movies/featured', movies.readFeatured);
-app.get('/movies/:title', movies.read);
-app.get('/movies/genre/:name', movies.readGenre);
-app.get('/movies/:title/genre', movies.readGenreByTitle);
-app.get('/movies/director/:name', movies.readDirector);
-app.get('/movies/:title/director', movies.readDirectorByTitle);
+app.get('/movies', authenticate, movies.readAll);
+app.get('/movies/search', authenticate, movies.search);
+app.get('/movies/featured', authenticate, movies.readFeatured);
+app.get('/movies/:title', authenticate, movies.read);
+app.get('/movies/genre/:name', authenticate, movies.readGenre);
+app.get('/movies/:title/genre', authenticate, movies.readGenreByTitle);
+app.get('/movies/director/:name', authenticate, movies.readDirector);
+app.get('/movies/:title/director', authenticate, movies.readDirectorByTitle);
 
 
 const validateSignup = [ 
