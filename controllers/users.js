@@ -84,19 +84,21 @@ module.exports.update =
       return res.status(400).json({ errors: errors.array() });
     }
     if(req.user.Username !== req.params.Username) {
-      return res.status(400).send('Permission denied'); //use 403 for forbidden?
+      return res.status(400).send('Permission denied'); 
     }
     try {
-      const hashedPassword = User.hashPassword(req.body.Password);
+      let userData= {
+        Username: req.body.Username,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday  
+      }
+      
+      if (req.body.Password) {
+        userData.Password = User.hashPassword(req.body.Password);
+      }
+
       const updatedUser = await User.findOneAndUpdate({ Username: req.params.Username }, 
-        { $set:
-          {
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          }
-        }, { new: true });
+        { $set: userData }, { new: true });
       res.json(updatedUser);
     } catch (err) {
       console.error(err);
