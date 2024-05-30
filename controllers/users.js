@@ -108,11 +108,11 @@ module.exports.update =
 
 module.exports.delete = async (req, res) => {
   try {
-    const user = await User.findOneAndDelete({ Username: req.params.Username }); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
+    const user = await User.findByIdAndDelete(req.params.id); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
     if (!user) {
-      res.status(400).send({ message: `${req.params.Username} was not found` });
+      res.status(400).send({ message: `User with id ${req.params.id} was not found` });
     } else {
-      res.status(200).send({ message: `${req.params.Username} was deleted.` });
+      res.status(200).send({ message: `User with id ${req.params.id} was deleted.` });
     }
   } catch (err) {
     console.error(err);
@@ -123,12 +123,12 @@ module.exports.delete = async (req, res) => {
 
 module.exports.addFavoriteMovie = async (req, res) => {
   try {
-    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.Title}$`, 'i') } });
+    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.title}$`, 'i') } });
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
-    const updatedUser = await User.findOneAndUpdate(
-      { Username: req.params.Username },
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
       { $push: { FavoriteMovies: movie._id } },
       { new: true }
     );
@@ -144,20 +144,19 @@ module.exports.addFavoriteMovie = async (req, res) => {
 
 module.exports.removeFavoriteMovie = async (req, res) => {
   try {
-    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.Title}$`, 'i') } });
+    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.title}$`, 'i') } });
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
-    const updatedUser = await User.findOneAndUpdate(
-      { Username: req.params.Username },
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
       { $pull: { FavoriteMovies: movie._id } },
       { new: true }
     );
     if (!updatedUser) {
-      res.status(400).send( {message: `Movie ${req.params.Title} was not found in the favorite list of ${req.params.Username}` });
-    } else {
-      res.status(200).send({ message: `Movie ${req.params.Title} was deleted from the favorite list of ${req.params.Username}` });
+      return res.status(400).send('User not found');
     }
+    res.json(updatedUser);
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: `Error: ${err}` });

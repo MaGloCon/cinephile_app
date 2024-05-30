@@ -109,10 +109,10 @@ app.get('/users/search/id/:id', authenticate, users.readById);
 app.get('/users/search/username/:username',authenticate, users.readByUsername);
 app.get('/users', authenticate, users.readAll);
 app.put('/users/profile/update/:Username', validateUpdate, authenticate, users.update); 
-app.post('/users/:Username/favorite/:Title', authenticate, users.addFavoriteMovie);
-app.delete('/users/:Username/favorite/:Title', authenticate, users.removeFavoriteMovie);
+app.post('/users/:id/favorite/:Title', authenticate, users.addFavoriteMovie);
+app.delete('/users/:id/favorite/:Title', authenticate, users.removeFavoriteMovie);
 app.get('/users/profile/me', authenticate, users.me); 
-app.delete('/users/profile/delete', authenticate, users.delete);
+app.delete('/users/profile/delete/:id', authenticate, users.delete);
 app.post('/logout', (req, res) => { 
   req.logout();
   res.status(200).send('Logged out');
