@@ -92,7 +92,7 @@ module.exports.update =
         Email: req.body.Email,
         Birthday: req.body.Birthday  
       }
-      
+
       if (req.body.Password) {
         userData.Password = User.hashPassword(req.body.Password);
       }
@@ -108,11 +108,11 @@ module.exports.update =
 
 module.exports.delete = async (req, res) => {
   try {
-    const user = await User.findOneAndDelete({ Username: req.params.Username }); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
+    const user = await User.findByIdAndDelete(req.params.id); // Mongoose 8.3.4: ./findOneandRemove() is deprecated
     if (!user) {
-      res.status(400).send({ message: `${req.params.Username} was not found` });
+      res.status(400).send({ message: `${req.params.id} was not found` });
     } else {
-      res.status(200).send({ message: `${req.params.Username} was deleted.` });
+      res.status(200).send({ message: `${req.params.id} was deleted.` });
     }
   } catch (err) {
     console.error(err);
