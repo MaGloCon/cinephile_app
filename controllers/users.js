@@ -123,7 +123,7 @@ module.exports.delete = async (req, res) => {
 
 module.exports.addFavoriteMovie = async (req, res) => {
   try {
-    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.title}$`, 'i') } });
+    const movie = await Movie.findOne({ Title: { $regex: new RegExp(`^${req.params.Title}$`, 'i') } });
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
