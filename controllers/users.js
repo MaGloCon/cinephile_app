@@ -127,6 +127,13 @@ module.exports.addFavoriteMovie = async (req, res) => {
     if (!movie) {
       return res.status(400).send('Movie not found');
     }
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(400).send('User not found');
+    }
+    if (user.FavoriteMovies.includes(movie._id)) {
+      return res.status(409).send('Movie is already a favorite');
+    }
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       { $push: { FavoriteMovies: movie._id } },
