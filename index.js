@@ -48,6 +48,7 @@ app.get('/movies', authenticate, movies.readAll);
 app.get('/movies/search', authenticate, movies.search);
 app.get('/movies/featured', authenticate, movies.readFeatured);
 app.get('/movies/:title', authenticate, movies.read);
+app.get('/movies/:id', authenticate, movies.readById);
 app.get('/movies/genre/:name', authenticate, movies.readGenre);
 app.get('/movies/:title/genre', authenticate, movies.readGenreByTitle);
 app.get('/movies/director/:name', authenticate, movies.readDirector);

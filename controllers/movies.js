@@ -62,6 +62,20 @@ module.exports.read = async (req, res) => {
   }
 };
 
+module.exports.readById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).send({ message: 'The movie couldn\'t be found.' });
+    }
+    res.status(200).json(movie);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Error retrieving movie' });
+  }
+};
+
 module.exports.readGenre = async (req, res) => {
   const { name } = req.params;
   try {
