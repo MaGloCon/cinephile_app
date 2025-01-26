@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
@@ -9,11 +10,10 @@ const { check } = require('express-validator');
 const users = require('./controllers/users.js');
 const movies = require('./controllers/movies.js');
 
-mongoose.connect(process.env.CONNECTION_URI);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("Connected to cfDB database");
+mongoose.connect(`${process.env.CONNECTION_URI}`, { dbName: "cfDB" }).then(() => {
+  console.log("Connected to cfDB Database");
+}).catch((err) => {
+  console.error(`Error connecting to the database. \n${err}`);
 });
 
 app.use(morgan('common'));
